@@ -2,7 +2,13 @@
 class Forecast_model  extends CI_Model
 {
 	
-	
+	function getForecast($did)
+        {
+                   $q = "SELECT fdate,rainfall,mintemp,maxtemp FROM forecast WHERE fdate = (SELECT max(fdate) FROM forecast where did = ? ) AND did = ?";
+                   $q = $this->db->query($q,array($did,$did));
+                   $row = $q->row();
+                   return $row;
+        }
 	
 	function insertForecastData()
 	{
