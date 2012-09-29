@@ -6,30 +6,8 @@
       
           <div id="welcome_msg">
 
-      <h2><br/>এডমিন প্যানেল !</h2>
+      <h2><br/><?php echo $welcomeMsg;?></h2>
 
- <li> <a href="<?php echo base_url()."index.php/adminArea/addStation";?>" shape="rect" coords="0,0,100,50">Add Station</a></li>
-  <li> <a href="<?php echo base_url()."index.php/adminArea/deleteStation";?>">Delete Station</a></li>
-   <li> <a href="<?php echo base_url()."index.php/adminArea/updateStation";?>">Update Station</a></li>
-   <li> <a href="<?php echo base_url()."index.php/adminArea/showStation";?>">Show Station Data</a></li>
-   
-   <li> <a href="<?php echo base_url()."index.php/adminArea/addDivision";?>">Add Division</a></li>
-  <li> <a href="<?php echo base_url()."index.php/adminArea/deleteDivision";?>">Delete Division</a></li>
-   <li> <a href="<?php echo base_url()."index.php/adminArea/updateDivision";?>">Update Division</a></li>
-   <li> <a href="<?php echo base_url()."index.php/adminArea/showDivision";?>">Show Division Data</a></li>
-  
-  <li> <a href="<?php echo base_url()."index.php/adminArea/addWeather";?>">Add Weather Data</a></li>
-  <li> <a href="<?php echo base_url()."index.php/adminArea/deleteWeather";?>">Delete Weather Data</a></li>
-   <li> <a href="<?php echo base_url()."index.php/adminArea/updateWeather";?>">Update Weather Data</a></li>
-   <li> <a href="<?php echo base_url()."index.php/adminArea/showWeather";?>">Show Weather Data</a></li>
-  
-  
-  <li> <a href="<?php echo base_url()."index.php/adminArea/addForecast";?>">Add Forecast Data</a></li>
-  <li> <a href="<?php echo base_url()."index.php/adminArea/deleteForecast";?>">Delete Forecast Data</a></li>
-   <li> <a href="<?php echo base_url()."index.php/adminArea/updateForecast";?>">Update Forecast Data</a></li>
-   <li> <a href="<?php echo base_url()."index.php/adminArea/showForecast";?>">Show Forecast Data</a></li>
-  
-  
 
 
 
