@@ -8,8 +8,8 @@ class Weather_data extends CI_Model
 {
     public function getRecentData($sid)
     {
-        $q = "SELECT wdate,rainfall,mintemp,maxtemp,humidity FROM weatherdata WHERE wdate = (SELECT max(wdate) FROM weatherdata) AND sid = ?";
-        $q = $this->db->query($q,$sid);
+        $q = "SELECT wdate,rainfall,mintemp,maxtemp,humidity FROM weatherdata WHERE wdate = (SELECT max(wdate) FROM weatherdata WHERE sid = ? ) AND sid = ?";
+        $q = $this->db->query($q,array($sid,$sid));
          $row = $q->row();
 
          return $row;
