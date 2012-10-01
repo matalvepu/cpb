@@ -24,7 +24,6 @@
 
 
 function initialize() {
-
  var myLatlng = new google.maps.LatLng( 23.91300633848028,89.88601684570313);
  
   var mapOptions = {
@@ -33,14 +32,14 @@ function initialize() {
     mapTypeId: google.maps.MapTypeId.HYBRID 
   }
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-  /*placeMarker(myLatlng);
+  placeMarker(myLatlng);
   placeMarker(new google.maps.LatLng(23.64783228249999,90.1263427734375));//tangail and faridpur
   placeMarker(new google.maps.LatLng(23.37691608459911,90.01922607421875));
    placeMarker(new google.maps.LatLng(23.43713170474456,90.31036376953125));
     placeMarker(new google.maps.LatLng(23.97125673670242,90.16754150390625));
 	 placeMarker(new google.maps.LatLng(24.48945838981241,90.16067504882813));
 	 placeMarker(new google.maps.LatLng(24.22091998513352,90.4119873046875));
-	 placeMarker(new google.maps.LatLng(24.52075643786685,91.07254028320313));*/
+	 placeMarker(new google.maps.LatLng(24.52075643786685,91.07254028320313));
 	 
 	 
   infowindow = new google.maps.InfoWindow();
@@ -52,16 +51,19 @@ function initialize() {
   }
   poly = new google.maps.Polyline(polyOptions);
   poly.setMap(map);
-  //google.maps.event.addListener(map, 'click', addLatLng);
-  var cchittagong="<?php echo $color[0]?>",cdhaka="<?php echo $color[1]?>",csylhet="<?php echo $color[2]?>",cbarishal="<?php echo $color[3]?>",crajshahi="<?php echo $color[4]?>",crangpur="<?php echo $color[5]?>",ckhulna="<?php echo $color[6]?>";
-  Rajshahi(crajshahi);
-  Rangpur(crangpur);
- Dhakawhole(cdhaka);
- Sylhet(csylhet);
- Khulna(ckhulna);
- Chittagong(cchittagong);
- Barisal(cbarishal);
-  
+  google.maps.event.addListener(map, 'click', addLatLng);
+
+
+
+
+ //Rajshahi();
+ /*Rangpur();
+ Dhakawhole();
+ Sylhet();
+ Khulna();
+ Chittagong();
+ Barisal();*/
+
 
  
 }
@@ -1296,7 +1298,8 @@ function placeMarker(location) {
 	   
    }
    
- function Rajshahi(crajshahi)
+   
+ function Rajshahi()
  {
 	 var rajshahiCoordinate = [
 	 
@@ -1526,10 +1529,10 @@ function placeMarker(location) {
 		 
 		 var rajshahi= new google.maps.Polygon({
 			paths: rajshahiCoordinate,
-			strokeColor: crajshahi ,
+			strokeColor: #FF0000 ,
 			strokeOpacity: 0.8,
 			strokeWeight: 2,
-			fillColor: crajshahi,
+			fillColor: #FF0000,
 			fillOpacity: 0.35
 		  });
 		
@@ -1543,7 +1546,7 @@ function placeMarker(location) {
  }
  
  
- function Rangpur(crangpur)
+ function Rangpur()
  {
 	 var rangpurCoordinate = [
 	 
@@ -1730,10 +1733,10 @@ new google.maps.LatLng(25.419580050996927, 89.83657836914062)
 		 
 		 var rangpur= new google.maps.Polygon({
 			paths: rangpurCoordinate,
-			strokeColor: crangpur,
+			strokeColor: '<?php echo $color[5] ?>',
 			strokeOpacity: 0.8,
 			strokeWeight: 2,
-			fillColor: crangpur,
+			fillColor:'<?php echo $color[5] ?>',
 			fillOpacity: 0.35
 		  });
 		
@@ -1746,11 +1749,10 @@ new google.maps.LatLng(25.419580050996927, 89.83657836914062)
 	 
  }
  
- function Dhakawhole(cdhaka)
+ function Dhakawhole()
  {
 	 var dhakaWholeCoordinate = [
 	 
-	 			
 	 			new google.maps.LatLng(23.884449991728015, 89.32022094726562),
 new google.maps.LatLng(23.81913776735794, 89.34768676757812),
 new google.maps.LatLng(23.743736652623944, 89.32022094726562),
@@ -1892,6 +1894,8 @@ new google.maps.LatLng(23.854309978548876, 89.43557739257812),
 new google.maps.LatLng(23.854309978548876, 89.38613891601562),
 new google.maps.LatLng(23.89449510330671, 89.33670043945312),
 new google.maps.LatLng(23.909561307807998, 89.31472778320312)
+		
+	   
 			
 		  ];
 		  
@@ -1899,10 +1903,10 @@ new google.maps.LatLng(23.909561307807998, 89.31472778320312)
 		 
 		 var dhakaWhole= new google.maps.Polygon({
 			paths: dhakaWholeCoordinate,
-			strokeColor: cdhaka,
+			strokeColor:'<?php echo $color[1] ?>',
 			strokeOpacity: 0.8,
 			strokeWeight: 2,
-			fillColor: cdhaka,
+			fillColor:'<?php echo $color[1] ?>',
 			fillOpacity: 0.35
 		  });
 		
@@ -1916,7 +1920,7 @@ new google.maps.LatLng(23.909561307807998, 89.31472778320312)
  }
  
  
- function Sylhet(csylhet)
+ function Sylhet()
  {
 	 var sylhetCoordinate = [
 	 
@@ -2107,10 +2111,10 @@ new google.maps.LatLng(25.19362711849444, 91.04507446289062)
 		 
 		 var sylhet= new google.maps.Polygon({
 			paths: sylhetCoordinate,
-			strokeColor: csylhet,
+			strokeColor:<?php echo $color[2] ?>,
 			strokeOpacity: 0.8,
 			strokeWeight: 2,
-			fillColor: csylhet,
+			fillColor:<?php echo $color[2] ?>,
 			fillOpacity: 0.35
 		  });
 		
@@ -2124,7 +2128,7 @@ new google.maps.LatLng(25.19362711849444, 91.04507446289062)
  }
  
  
- function Chittagong(cchittagong)
+ function Chittagong()
  {
 	 var chittagongCoordinate = [
 	 
@@ -2284,10 +2288,10 @@ new google.maps.LatLng(23.23616592775511, 92.3895263671875)
 		 
 		 var chittagong= new google.maps.Polygon({
 			paths: chittagongCoordinate,
-			strokeColor: cchittagong ,
+			strokeColor: ,
 			strokeOpacity: 0.8,
 			strokeWeight: 2,
-			fillColor: cchittagong,
+			fillColor:'<?php echo $color[0] ?>',
 			fillOpacity: 0.35
 		  });
 		
@@ -2301,7 +2305,7 @@ new google.maps.LatLng(23.23616592775511, 92.3895263671875)
  }
  
  
- function Barisal(cbarishal)
+ function Barisal()
  {
 	 var barisalCoordinate = [
 		
@@ -2429,10 +2433,10 @@ new google.maps.LatLng(21.86646277113957, 90.08514404296875)
 		 
 		 var barisal= new google.maps.Polygon({
 			paths: barisalCoordinate,
-			strokeColor: cbarishal,
+			strokeColor: '<?php echo $color[3] ?>',
 			strokeOpacity: 0.8,
 			strokeWeight: 2,
-			fillColor: cbarishal,
+			fillColor: '<?php echo $color[3] ?>',
 			fillOpacity: 0.35
 		  });
 		
@@ -2446,7 +2450,7 @@ new google.maps.LatLng(21.86646277113957, 90.08514404296875)
  }
  
  
- function Khulna(ckhulna)
+ function Khulna()
  {
 	 var khulnaCoordinate = [
 	 
@@ -2608,10 +2612,10 @@ new google.maps.LatLng(24.18295744507234, 88.73794555664062)
 		 
 		 var khulna= new google.maps.Polygon({
 			paths: khulnaCoordinate,
-			strokeColor: ckhulna,
+			strokeColor: '<?php echo $color[6] ?>',
 			strokeOpacity: 0.8,
 			strokeWeight: 2,
-			fillColor: ckhulna,
+			fillColor: '<?php echo $color[1] ?>',
 			fillOpacity: 0.35
 		  });
 		
@@ -2625,9 +2629,6 @@ new google.maps.LatLng(24.18295744507234, 88.73794555664062)
  }
  
 
-   
-   
- 
   
 
   </script>  
@@ -2638,14 +2639,23 @@ new google.maps.LatLng(24.18295744507234, 88.73794555664062)
    
 
 
-    <!-- <button type="button" onclick="ShowAllCoordinate()">Show</button>
+  <!--   <button type="button" onclick="ShowAllCoordinate()">Show</button>
      <button type="button" onclick="Faridpur()">Faridpur</button>
      <button type="button" onclick="Madaripur()">Madaripur</button>
      <button type="button" onclick="Tangail()">Tangail</button>
      <button type="button" onclick="Dhaka()">Dhaka</button>
       <button type="button" onclick="Mymensingh()">Mymensingh</button>
+      <button type="button" onclick="Rajshahi()">Rajshahi</button>
+      <button type="button" onclick="Rangpur()">Rangpur</button>
+      <button type="button" onclick="Dhakawhole()">Dhaka Division</button>
+      <button type="button" onclick="Sylhet()">Sylhet</button>
+      <button type="button" onclick="Chittagong()">Chittagong</button>
+      <button type="button" onclick="Barisal()">Barisal</button>
+      <button type="button" onclick="Khulna()">Khulna</button>
+      
     
-    <button type="button" onclick="Undo()">Undo</button>-->
+    <button type="button" onclick="Undo()">Undo</button>
+  -->
     <div id="map_canvas" style="width:100%; height:100%"></div>
     
     
