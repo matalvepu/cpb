@@ -60,7 +60,7 @@ class Android extends CI_Controller {
 
                 $divisionName = $this->division_model->getDivisionName($testdata[$i]);
                 $divisionName = $divisionName->name;
-                echo $this->unit->run($codeOutput,$expectedvalue, "Testing getRainfallForecast for Division : $divisionName ");
+                echo $this->unit->run($codeOutput,$expectedvalue, "Testing Serverside : getRainfallForecast for Division : $divisionName ");
             }
         }
         function unit_test_getRecentData()
