@@ -31,6 +31,38 @@ class Android extends CI_Controller {
  
 	}
 
+        function unit_test_getRainfallForecast()
+        {
+
+            $testdata=array(1,2,5,6,7,8,9);
+
+            $expected = array(30.000,70.000,110.000,160.000,210.000,80.000,180.000);
+
+            $this->load->model('forecast_model');
+            $this->load->model('division_model');
+
+            
+            foreach($testdata as $did)
+            {
+
+                $row = $this->forecast_model->getRainfallForecast($did);
+                $output[]=round($row->rainfall,3);
+
+                //echo "$row->rainfall,";
+            }
+            
+
+            $this->load->library('unit_test');
+            for($i=0;$i<7;$i++)
+            {
+                $codeOutput=$output[$i];
+                $expectedvalue=$expected[$i];
+
+                $divisionName = $this->division_model->getDivisionName($testdata[$i]);
+                $divisionName = $divisionName->name;
+                echo $this->unit->run($codeOutput,$expectedvalue, "Testing getRainfallForecast for Division : $divisionName ");
+            }
+        }
         function unit_test_getRecentData()
         {
 
@@ -40,22 +72,16 @@ class Android extends CI_Controller {
                 "0" => Array ("2012-10-01",22.000 ,25.000,36.000 ,70.000 ),
                 "1" => Array ( "2012-10-01",30.000,26.000,34.000,72.0000 ),
                 "2" => Array ( "2012-10-01",30.000,21.000,33.000,71.0000 ),
-				"3" => Array ( "2009-12-31",NULL,15.000,27.700,NULL ),				
-				"4" => Array ( "2012-10-01",5.000,30.000,41.000,29.000 )
-
-
+                "3" => Array ( "2009-12-31",NULL,15.000,27.700,NULL ),
+                "4" => Array ( "2012-10-01",5.000,30.000,41.000,29.000 )
             );
             $this->load->model('weather_data');
-            $originial=array(
-                        );
+            $original=array();
 
             foreach($testdata as $sid)
             {
-               $row = $this->weather_data->getRecentData($sid);
-             
-
-             $original[]=array($row->wdate,$row->rainfall,$row->mintemp,$row->maxtemp,$row->humidity);
-
+                $row = $this->weather_data->getRecentData($sid);
+                $original[]=array($row->wdate,$row->rainfall,$row->mintemp,$row->maxtemp,$row->humidity);
             }
 			
             $this->load->library('unit_test');
@@ -63,14 +89,11 @@ class Android extends CI_Controller {
             {
                 $test=$original[$i];
                 $expectedvalue=$expected[$i];
-
-                  echo $this->unit->run($test,$expectedvalue, 'testing getRecent DAta');
+                echo $this->unit->run($test,$expectedvalue, 'testing getRecent DAta');
 
 
            
-			}
-
-
+            }
         }
         function getDistance($lat, $long, $newlat,$newlong)
         {

@@ -1,6 +1,13 @@
 <?php
 class Division_model  extends CI_Model
 {
+    function getDivisionName($did)
+        {
+                   $q = "SELECT name FROM division WHERE  did = ?";
+                   $q = $this->db->query($q,$did);
+                   $row = $q->row();
+                   return $row;
+        }
     function getLatLong($sid)
     {
         $query="SELECT latitude, longitude FROM division WHERE did = ?";
