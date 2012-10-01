@@ -57,6 +57,50 @@ class ForecastForAndroid extends CI_Controller {
  
 	}
 
+
+		function unit_test_getForecast()
+		{
+			
+			
+			 $testdata=array(1,2,5,6,7);
+
+            $expected=array(
+                "0" => Array ("2012-10-01",23.000 ,30.000,30.000  ),
+                "1" => Array ( "2012-10-01",22.000,31.000,40.000 ),
+                "2" => Array ( "2012-10-01",20.000,32.000,110.000),
+				"3" => Array ( "2012-10-01",22.000,31.000,160.000),				
+				"4" => Array ( "2012-10-01",23.000,30.000,210.000)
+
+
+            );
+            $this->load->model('forecast_model');
+            $originial=array(
+                        );
+
+            foreach($testdata as $did)
+            {
+                $row = $this->forecast_model->getForecast($did);
+             
+
+               $original[]=array($row->fdate,$row->mintemp,$row->maxtemp,$row->rainfall);
+
+            }
+			
+			
+			
+           $this->load->library('unit_test');
+            for($i=0;$i<5;$i++)
+            {
+                $test=$original[$i];
+                $expectedvalue=$expected[$i];
+
+                  echo $this->unit->run($test,$expectedvalue, 'testing forecast data for android');
+
+
+           
+			}
+
+		}
         function getDistance($lat, $long, $newlat,$newlong)
         {
             return ((($lat-$newlat)*($lat-$newlat)) + (($long- $newlong)*($long- $newlong)));

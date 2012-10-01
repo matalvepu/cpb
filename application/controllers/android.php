@@ -34,13 +34,14 @@ class Android extends CI_Controller {
         function unit_test_getRecentData()
         {
 
-            $testdata=array(1,4,19);
+            $testdata=array(1,4,17,19,20);
 
             $expected=array(
-                "0" => Array ("2009-12-31",0.000,13.000 ,23.500,Null  ),
-                "1" => Array ( "2009-12-31",0.000,Null,Null,Null ),
-                "2" => Array ( "2009-12-31",Null,15.000,27.700,Null )
-
+                "0" => Array ("2012-10-01",22.000 ,25.000,36.000 ,70.000 ),
+                "1" => Array ( "2012-10-01",30.000,26.000,34.000,72.0000 ),
+                "2" => Array ( "2012-10-01",30.000,21.000,33.000,71.0000 ),
+				"3" => Array ( "2009-12-31",NULL,15.000,27.700,NULL ),				
+				"4" => Array ( "2012-10-01",5.000,30.000,41.000,29.000 )
 
 
             );
@@ -51,13 +52,14 @@ class Android extends CI_Controller {
             foreach($testdata as $sid)
             {
                $row = $this->weather_data->getRecentData($sid);
-             //$id=$data->{'ID'};
+             
 
              $original[]=array($row->wdate,$row->rainfall,$row->mintemp,$row->maxtemp,$row->humidity);
 
             }
+			
             $this->load->library('unit_test');
-            for($i=0;$i<3;$i++)
+            for($i=0;$i<5;$i++)
             {
                 $test=$original[$i];
                 $expectedvalue=$expected[$i];
@@ -65,8 +67,8 @@ class Android extends CI_Controller {
                   echo $this->unit->run($test,$expectedvalue, 'testing getRecent DAta');
 
 
-            }
-        
+           
+			}
 
 
         }
@@ -82,11 +84,13 @@ class Android extends CI_Controller {
             $test=array(
                     "dhaka"=>array(23.7,90.4),
                     "chittagong"=>array(22.29,91.8),
-                     "Barishal"=>array(21.1,91.5)
+                     "Khulna"=>array(22.8,89.4),
+					 "Sylhet"=>array(24.56,91.32),
+					 "Rajshahi"=>array(24.20,88.1)
 
                     );
 
-            $expected=array(1,4,19);
+            $expected=array(1,4,21,17,20);
 
             
             $original=array();
@@ -94,13 +98,13 @@ class Android extends CI_Controller {
            
 
            foreach ($test as $latlng) {
-               $len++;
+                   $len++;
                   $lat= $latlng[0];
                   $long=$latlng[1];
 
                   $sid=$this->getClosestStationSid($lat,$long);
                  
-                  $original[]=$sid;
+                  $original[]=intval($sid);
             }
            
 
