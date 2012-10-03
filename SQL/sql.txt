@@ -1,0 +1,44 @@
+CREATE TABLE crop
+(
+    cropid INT PRIMARY KEY,
+    name VARCHAR(100)
+
+);
+
+CREATE TABLE pesticide
+(
+    pestid INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+CREATE TABLE seed
+(
+    seedid INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+CREATE TABLE fertilizer
+(
+    fid INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+CREATE TABLE cultivationData
+(
+    surrogateId INT PRIMARY KEY,
+    sid INT ,
+    cropid INT ,
+    startTime DATE,
+    harvestTime DATE,
+    quantity REAL(10,2),
+    productionCost REAL(10,2),
+    sellingPrice REAL(10,2),
+    landSize REAL(10,2),
+    FOREIGN KEY (sid) REFERENCES station(sid) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (cropid) REFERENCES crop(cropid) ON DELETE CASCADE ON UPDATE CASCADE
+);
+alter table crop modify column cropid INT auto_increment;
+alter table seed modify column seedid INT auto_increment;
+alter table fertilizer modify column fid INT auto_increment;
+alter table pesticide modify column pestid INT auto_increment;
+
+
+INSERT INTO `weather`.`crop` (`cropid`, `name`) VALUES (NULL, 'Paddy'), (NULL, 'Potato');
+
