@@ -12,6 +12,7 @@ function nav_load($str,$current)
                      $navdata['home']="হোম";
                      $navdata['forecast']="পূর্বাভাস";
                      $navdata['temp_comparison']="তাপমাত্রা তুলনা";
+                     $navdata['agri_guggest']= "কৃষি উপদেশ";
                      return $navdata;
     }
     else
@@ -20,11 +21,13 @@ function nav_load($str,$current)
                      $navdata['home']="Home";
                      $navdata['forecast']="Forecast";
                      $navdata['temp_comparison']="Temperature Comparison";
+                     $navdata['agri_guggest']= "Agricultural Suggestion";
+
                      return $navdata;
     
         
     }
-                     //$this->load->view('eng_segments/top_navigation',$navdata);
+               
 }
 
 ?>

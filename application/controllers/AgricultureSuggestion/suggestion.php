@@ -3,7 +3,56 @@
 class Suggestion extends CI_Controller
 {
 
- public function index()
+      var $viewData;
+     function __construct()
+	{
+		parent::__construct();
+		$this->init();
+	}
+        function init()
+	{
+                    if( $this->session->userdata('language') ==FALSE)
+                     $this->session->set_userdata('language', 'bangla');
+	}
+        public function index()
+	{
+
+            $this->viewData['title'] = "কৃষি উপদেশ";
+            $this->viewData['main']="";
+		$this->load->helper('nav_loader');
+
+                $this->suggest();
+                 if( $this->session->userdata('language')=='bangla')
+                 {
+                     $this->load->view('eng_segments/normal_head');
+                     $logodata['title']="বাংলাদেশ ক্লাইমেট পোর্টাল ";
+                     $this->load->view('eng_segments/logo',$logodata);
+
+                     $this->load->view('eng_segments/top_navigation',nav_load('bangla','agri_guggest'));
+
+                     
+                     
+                     $this->load->view('AgricultureSuggestion/suggestionView',  $this->viewData);
+
+
+                     $this->load->view('eng_segments/footer');
+                 }
+                 else
+                 {
+                     $this->load->view('eng_segments/normal_head');
+                     $logodata['title']='Climate Portal For Bangladesh';
+                     $this->load->view('eng_segments/logo',$logodata);
+
+                     $this->load->view('eng_segments/top_navigation',nav_load('english','agri_guggest'));
+
+                     $this->load->view('AgricultureSuggestion/suggestionView',$data);
+
+                     $this->load->view('eng_segments/footer');
+                 }
+
+	}
+
+ public function suggest()
  {
       //echo date("Y-m-d");
      $sid = 20;
@@ -25,6 +74,7 @@ class Suggestion extends CI_Controller
       $edate = intval(date("d",time()+7*24*3600));
 
       $this ->load->model('cultivationDataModel');
+           $this ->load->model('cropModel');
 
       // WE NEED DATA FOR LAST 3 YEARS
       for($i=1;$i<=3;$i++)
@@ -38,8 +88,8 @@ class Suggestion extends CI_Controller
             }
       }
 
-      echo "<br/> Surrogate Keys";
-      print_r($surrogateIds);
+     // echo "<br/> Surrogate Keys";
+     // print_r($surrogateIds);
 
       // WE HAVE SURROGATE NEEDED FOR THAT REGION
 
@@ -53,8 +103,8 @@ class Suggestion extends CI_Controller
       // Get which crops are selected
       $selectedCrops = $this->cultivationDataModel->getSelectedCropIds($surrogateIds);
 
-      echo "<br/> Selected Crops";
-      print_r($selectedCrops);
+     // echo "<br/> Selected Crops";
+    //  print_r($selectedCrops);
 
 
       
@@ -121,17 +171,21 @@ class Suggestion extends CI_Controller
               $probableRevenue = $probableQuantity * $revenuePerUnit;
               $maxProbableRevinue = $maxRevenuePerUnit * $probableQuantity;
 
-              echo "<br/>crop : $cropId quantity : $probableQuantity cost : $probableCost ,sell : $probableSellPrice, revenue : $probableRevenue ,max:  $maxProbableRevinue<br/>";
+              $cropName=$this->cropModel->getCropName($cropId);
+              $this->viewData['main'] .= "<br/>crop : $cropName quantity : $probableQuantity cost : $probableCost ,sell : $probableSellPrice, revenue : $probableRevenue ,max:  $maxProbableRevinue<br/>";
+              
           }
           else
           {
-              echo "No suggestion found given Criteria<bd/>";
+              //$data['main']= "দুঃখিত !! আপনার পরিস্তিতির সাথে সামঞ্জস্য পূর্ন কোনো ততথ্য পাওয়া যায় নি<br/>";
           }
           
 
           //echo "<br/>";
       }
  }
+
+
 }
 ?>
 

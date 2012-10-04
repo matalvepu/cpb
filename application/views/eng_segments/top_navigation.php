@@ -6,6 +6,7 @@
         <li <?php  if($current=="welcome") echo "class=\"active\"";?>><a href="<?php echo base_url();?>"><?=$home?></a></li>
         <li <?php  if($current=="forecast") echo "class=\"active\"";?>><a href="<?php echo base_url();?>index.php/map"><?=$forecast?></a></li>
         <li <?php  if($current=="map") echo "class=\"active\"";?>><a href="<?php echo base_url();?>index.php/map"><?=$temp_comparison?></a>
+        <li <?php  if($current=="agri_guggest") echo "class=\"active\"";?>><a href="<?php echo base_url();?>index.php/AgricultureSuggestion/suggestion"><?=$agri_guggest?></a>
           <!--  <ul>
             <li><a href="#">Link 1</a></li>
             <li><a href="#">Link 2</a></li>
