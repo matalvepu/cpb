@@ -1,92 +1,117 @@
 <?php
 class CultivationDataModel  extends CI_Model
 {
-    function insertStation()
+    
+    function getSurrogateIds($syear,$smonth,$sdate,$eyear,$emonth,$edate,$sid)
     {
+        $query="SELECT surrogateId FROM cultivationdata WHERE  startTime BETWEEN '?-?-?' AND '?-?-?' AND sid = ?";
 
-
-         $data = array(
-               'name' =>$this->input->post('station_name') ,
-               'latitude' => $this->input->post('latitude'),
-               'longitude' => $this->input->post('longitude')
-
-            );
-                        $this->db->insert('station', $data);
-
-    }
-
-    function getSids()
-    {
-        $query="SELECT sid FROM station";
-	$q=$this->db->query($query);
+        $q=$this->db->query($query,array($syear,$smonth,$sdate,$eyear,$emonth,$edate,$sid));
+        
         if($q->num_rows()>0)
         {
             foreach($q->result() as $row)
             {
-                    $data[]=$row->sid;
+                    $data[]=$row->surrogateId;
+             //       print_r($data);
             }
             return $data;
         }
-        else return;
+        
+        else {
+           // echo "NULL";
+            return;
+        }
     }
 
-    function getLatLong($sid)
+    function getCropId($surrogateId)
     {
-        $query="SELECT latitude, longitude FROM station WHERE sid = ?";
-	$q=$this->db->query($query,$sid);
-        if($q->row() != NULL)
+        $this->db->select('cropId');
+        $this->db->where('surrogateId', $surrogateId);
+        $q = $this->db->get('cultivationData');
+
+        if($q->result() != NULL)
+            return $q->row()->cropId;
+        else
+            return NULL;
+    }
+
+    function getQuantity($surrogateId)
+    {
+        $this->db->select('quantity');
+        $this->db->where('surrogateId', $surrogateId);
+        $q = $this->db->get('cultivationData');
+
+        if($q->result() != NULL)
+            return $q->row()->quantity;
+        else
+            return NULL;
+    }
+    function getProductionCost($surrogateId)
+    {
+        $this->db->select('productionCost');
+        $this->db->where('surrogateId', $surrogateId);
+        $q = $this->db->get('cultivationData');
+
+        if($q->result() != NULL)
+            return $q->row()->productionCost;
+        else
+            return NULL;
+    }
+
+
+    function getSellingPrice($surrogateId)
+    {
+        $this->db->select('sellingPrice');
+        $this->db->where('surrogateId', $surrogateId);
+        $q = $this->db->get('cultivationData');
+
+        if($q->result() != NULL)
+            return $q->row()->sellingPrice;
+        else
+            return NULL;
+    }
+    
+    function getLandSize($surrogateId)
+    {
+        $this->db->select('landSize');
+        $this->db->where('surrogateId', $surrogateId);
+        $q = $this->db->get('cultivationData');
+
+        if($q->result() != NULL)
+            return $q->row()->landSize;
+        else
+            return NULL;
+    }
+
+    
+    function getSelectedCropIds($surrogateIds)
+    {
+        
+    //        $query="SELECT DISTINCT cropid FROM cultivationData WHERE surrogateId IN ?";
+
+        $this->db->distinct();
+        $this->db->select('cropId');
+        $this->db->where_in('surrogateId', $surrogateIds);
+        $q = $this->db->get('cultivationData');
+        
+        if($q->num_rows()>0)
         {
             foreach($q->result() as $row)
             {
-                    $data=array('lat' => $row->latitude,'long' => $row->longitude);
+                    $data[]=$row->cropId;
+               // print_r($data);
             }
             return $data;
         }
-        else return;
+
+        else 
+        {
+
+           // echo "NULL";
+            return;
+        }
     }
 
-
-    function getStationData()
-     {
-	 $name=$this->input->post('station_name');
-	 $query="SELECT * From station where name=?";
-	  $q=$this->db->query($query,$name);
-		if($q->num_rows()>0)
-		{
-			foreach($q->result() as $row)
-			{
-				
-				$data[]=$row;
-				
-				
-			}
-			
-		 return $data;	
-		}
-		else return;
-	 
- }
- function deleteStation($sid)
- {
-	 
-	 $query = "DELETE from station where sid=?";
-	 $this->db->query($query,$sid);
-	 
- }
- function updateStation()
- {
-	  $data = array(
-	  			'sid' =>$this->input->post('sid'),
-               'name' =>$this->input->post('station_name') ,
-               'latitude' => $this->input->post('latitude'),
-               'longitude' => $this->input->post('longitude')
-			  
-            );
-			
-		$this->db->where('sid',$this->input->post('sid'));
-        $this->db->update('station', $data); 
-	 
-	 
- }
- 
+    
 }
