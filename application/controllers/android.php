@@ -36,7 +36,7 @@ class Android extends CI_Controller {
 
             $testdata=array(1,2,5,6,7,8,9);
 
-            $expected = array(30.000,70.000,110.000,160.000,210.000,80.000,180.000);
+            $expected = array(30.000,40.000,110.000,160.000,210.000,80.000,180.000);
 
             $this->load->model('forecast_model');
             $this->load->model('division_model');
