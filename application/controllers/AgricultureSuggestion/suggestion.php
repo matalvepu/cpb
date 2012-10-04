@@ -19,11 +19,27 @@ class Suggestion extends CI_Controller
 
             $this->viewData['title'] = "কৃষি উপদেশ";
             $this->viewData['main']="";
-		$this->load->helper('nav_loader');
+            $this->viewData['count']=0;
+            $this->viewData['crop']="";
+            $this->viewData['cost']=NULL;
+            $this->viewData['sell']=NULL;
+            $this->viewData['revenue']=NULL;
+            $this->viewData['quantity']=NULL;
+            
+
+             $this->load->helper('nav_loader');
 
                 $this->suggest();
                  if( $this->session->userdata('language')=='bangla')
                  {
+
+                     $this->viewData['quantityText']="সম্ভাব্য পরিমাণ (মণ)";
+                     $this->viewData['costText']="সম্ভাব্য খরচ";
+                     $this->viewData['sellText']="সম্ভাব্য বিক্রয় মূল্য";
+                     $this->viewData['revenueText']="সম্ভাব্য লাভ";
+                     $this->viewData['maxrevText']="সম্ভাব্য সর্বোচ্চ লাভ";
+
+
                      $this->load->view('eng_segments/normal_head');
                      $logodata['title']="বাংলাদেশ ক্লাইমেট পোর্টাল ";
                      $this->load->view('eng_segments/logo',$logodata);
@@ -39,6 +55,13 @@ class Suggestion extends CI_Controller
                  }
                  else
                  {
+                                          $this->viewData['quantityText']="সম্ভাব্য পরিমাণ (মণ)";
+                     $this->viewData['costText']="সম্ভাব্য খরচ";
+                     $this->viewData['sellText']="সম্ভাব্য বিক্রয় মূল্য";
+                     $this->viewData['revenueText']="সম্ভাব্য লাভ";
+                     $this->viewData['maxrevText']="সম্ভাব্য সর্বোচ্চ লাভ";
+
+                     
                      $this->load->view('eng_segments/normal_head');
                      $logodata['title']='Climate Portal For Bangladesh';
                      $this->load->view('eng_segments/logo',$logodata);
@@ -171,8 +194,20 @@ class Suggestion extends CI_Controller
               $probableRevenue = $probableQuantity * $revenuePerUnit;
               $maxProbableRevinue = $maxRevenuePerUnit * $probableQuantity;
 
-              $cropName=$this->cropModel->getCropName($cropId);
-              $this->viewData['main'] .= "<br/>crop : $cropName quantity : $probableQuantity cost : $probableCost ,sell : $probableSellPrice, revenue : $probableRevenue ,max:  $maxProbableRevinue<br/>";
+              if($this->session->userdata('language')=='bangla')
+                     $cropName=$this->cropModel->getBanglaCropName($cropId);
+              else
+                     $cropName=$this->cropModel->getCropName($cropId);
+              
+              $this->viewData['count'] ++;
+              $this->viewData['crop'][]=$cropName;
+              $this->viewData['quantity'][]=$probableQuantity;
+              $this->viewData['cost'][] = $probableCost;
+              $this->viewData['sell'][]=$probableSellPrice;
+              $this->viewData['revenue'][]=$probableRevenue;
+              $this->viewData['maxrev'][]=$maxProbableRevinue;
+              
+              //$this->viewData['main'] .= "<br/>crop : $cropName quantity : $probableQuantity cost : $probableCost ,sell : $probableSellPrice, revenue : $probableRevenue ,max:  $maxProbableRevinue<br/>";
               
           }
           else

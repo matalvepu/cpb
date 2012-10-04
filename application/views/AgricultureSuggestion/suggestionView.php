@@ -6,7 +6,20 @@
 
       <h2><br/><?php echo $title;?></h2>
 
-      <?php echo $main;?>
+      <?php echo $main;
+
+      for($i=0 ;$i<$count;$i++)
+      {
+          echo $crop[$i]." : <br/>";
+          echo "$quantityText : ".$quantity[$i]."<br/>";
+          echo "$costText : ".$cost[$i]."  <br/>";
+          echo "$sellText : ".$sell[$i]."<br/>";
+          echo "$revenueText : ".$revenue[$i]." <br/>";
+
+          echo "$maxrevText : ".$maxrev[$i]."  <br/>";
+          echo "<br/>";
+          }
+      ?>
 
 
 
