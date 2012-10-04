@@ -2,7 +2,6 @@
 
 class Suggestion extends CI_Controller
 {
-
       var $viewData;
      function __construct()
 	{
@@ -14,9 +13,16 @@ class Suggestion extends CI_Controller
                     if( $this->session->userdata('language') ==FALSE)
                      $this->session->set_userdata('language', 'bangla');
 	}
-        public function index()
-	{
 
+        public function post()
+        {
+            
+        }
+
+        public function index()
+        {
+            $this->load->model('station_model');
+            $this->viewData['options']=$this->station_model->getSidandName();
             $this->viewData['title'] = "কৃষি উপদেশ";
             $this->viewData['main']="";
             $this->viewData['count']=0;
@@ -25,12 +31,24 @@ class Suggestion extends CI_Controller
             $this->viewData['sell']=NULL;
             $this->viewData['revenue']=NULL;
             $this->viewData['quantity']=NULL;
-            
+            $this->viewData['msg']="আপনার জমির পরিমাণ এবং  সবচেয়ে কাছাকাছি এলাকার নাম নির্বাচন করুন । আমাদের সিস্টেম থেকে জেনে নিন আপনার জন্য উপযোগী ফসল কী হবে । আপনি আরও জানতে পারবেন সম্ভাব্য উৎপাদন, খরচ, বিক্রয়মূল্য এবং লাভ।<br/><br/>";
 
+            $this->viewData['dropDownText']="এলাকা";
+            $this->viewData['landSizeText']="আপনার জমির পরিমাণ";
+            $this->viewData['submit']="উপদেশ দেখুন";
+
+            if( $this->input->post('stations') != NULL )
+            {
+                $sid = $this->input->post('stations');
+                $landSize =   $this->input->post('landSize');
+                $this->suggest($sid, $landSize);
+            }
+
+            
              $this->load->helper('nav_loader');
 
-                $this->suggest();
-                 if( $this->session->userdata('language')=='bangla')
+                
+                if( $this->session->userdata('language')=='bangla')
                  {
 
                      $this->viewData['quantityText']="সম্ভাব্য পরিমাণ (মণ)";
@@ -46,10 +64,7 @@ class Suggestion extends CI_Controller
 
                      $this->load->view('eng_segments/top_navigation',nav_load('bangla','agri_guggest'));
 
-                     
-                     
                      $this->load->view('AgricultureSuggestion/suggestionView',  $this->viewData);
-
 
                      $this->load->view('eng_segments/footer');
                  }
@@ -61,7 +76,7 @@ class Suggestion extends CI_Controller
                      $this->viewData['revenueText']="সম্ভাব্য লাভ";
                      $this->viewData['maxrevText']="সম্ভাব্য সর্বোচ্চ লাভ";
 
-                     
+
                      $this->load->view('eng_segments/normal_head');
                      $logodata['title']='Climate Portal For Bangladesh';
                      $this->load->view('eng_segments/logo',$logodata);
@@ -73,13 +88,12 @@ class Suggestion extends CI_Controller
                      $this->load->view('eng_segments/footer');
                  }
 
-	}
+        }
 
- public function suggest()
+ public function suggest($sid,$landSize)
  {
       //echo date("Y-m-d");
-     $sid = 20;
-     $landSize = 10;
+
 
       //Taking Current Date
       //$currentYear = date("Y");
@@ -99,6 +113,7 @@ class Suggestion extends CI_Controller
       $this ->load->model('cultivationDataModel');
            $this ->load->model('cropModel');
 
+           $surrogateIds=NULL;
       // WE NEED DATA FOR LAST 3 YEARS
       for($i=1;$i<=3;$i++)
       {
@@ -122,16 +137,16 @@ class Suggestion extends CI_Controller
       // FOR NOW SELECTING EVERY CROP ON THAT TIME SPAN
       /*********************************/
 
-
+$selectedCrops =NULL;
       // Get which crops are selected
-      $selectedCrops = $this->cultivationDataModel->getSelectedCropIds($surrogateIds);
+       if($surrogateIds != NULL)
+            $selectedCrops = $this->cultivationDataModel->getSelectedCropIds($surrogateIds);
 
      // echo "<br/> Selected Crops";
     //  print_r($selectedCrops);
 
-
-      
-
+       $found=false;
+       if($selectedCrops != NULL)
       foreach ($selectedCrops AS $cropId)
       {
           $cultivationCostPerUnit = 0;
@@ -139,7 +154,8 @@ class Suggestion extends CI_Controller
           $maxRevenuePerUnit=0;
           $quantityPerUnitArea = 0;
           $count = 0;
-          
+
+          if($surrogateIds != NULL)
           foreach($surrogateIds AS $surrogateId)
           {
 
@@ -208,16 +224,19 @@ class Suggestion extends CI_Controller
               $this->viewData['maxrev'][]=$maxProbableRevinue;
               
               //$this->viewData['main'] .= "<br/>crop : $cropName quantity : $probableQuantity cost : $probableCost ,sell : $probableSellPrice, revenue : $probableRevenue ,max:  $maxProbableRevinue<br/>";
-              
+            $found = TRUE;
           }
           else
           {
-              //$data['main']= "দুঃখিত !! আপনার পরিস্তিতির সাথে সামঞ্জস্য পূর্ন কোনো ততথ্য পাওয়া যায় নি<br/>";
+
+         //     echo "IN ELSE". $this->viewData['error'];
+              $this->viewData['error']= "দুঃখিত !! আপনার পরিস্তিতির সাথে সামঞ্জস্য পূর্ন কোনো ততথ্য পাওয়া যায় নি<br/>";
           }
           
 
           //echo "<br/>";
       }
+      if($found==false)   $this->viewData['error']= "দুঃখিত !! আপনার পরিস্তিতির সাথে সামঞ্জস্য পূর্ন কোনো তথ্য পাওয়া যায় নি<br/>";
  }
 
 
