@@ -1,0 +1,60 @@
+CREATE TABLE crop
+(
+    cropid INT PRIMARY KEY,
+    name VARCHAR(100)
+
+);
+
+CREATE TABLE pesticide
+(
+    pestid INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+CREATE TABLE seed
+(
+    seedid INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+CREATE TABLE fertilizer
+(
+    fid INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+CREATE TABLE cultivationData
+(
+    surrogateId INT PRIMARY KEY,
+    sid INT ,
+    cropid INT ,
+    startTime DATE,
+    harvestTime DATE,
+    quantity REAL(10,2),
+    productionCost REAL(10,2),
+    sellingPrice REAL(10,2),
+    landSize REAL(10,2),
+    FOREIGN KEY (sid) REFERENCES station(sid) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (cropid) REFERENCES crop(cropid) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+alter table crop modify column cropid INT auto_increment;
+alter table seed modify column seedid INT auto_increment;
+alter table fertilizer modify column fid INT auto_increment;
+alter table pesticide modify column pestid INT auto_increment;
+alter table cultivationData modify column surrogateId INT auto_increment;
+
+
+INSERT INTO `weather`.`crop` (`cropid`, `name`) VALUES (NULL, 'Paddy'), (NULL, 'Potato');
+INSERT INTO `weather`.`seed` (`seedid`, `name`) VALUES (NULL, 'SEED TYPE 3 - PADDY'), (NULL, 'SEED TYPE 4 - PADDY');
+INSERT INTO `weather`.`pesticide` (`pestid`, `name`) VALUES (NULL, 'PESTICIDE 1 '), (NULL, 'PESTICIDE 2');
+INSERT INTO fertilizer VALUES (NULL,"TSP"),(NULL,"Potash");
+
+INSERT INTO `weather`.`cultivationdata` (`surrogateId`, `sid`, `cropid`, `startTime`, `harvestTime`, `quantity`, `productionCost`, `sellingPrice`, `landSize`) VALUES ('', '20', '1', '2009-10-08', '2009-11-02', '10', '20000', '25000', '10');
+
+INSERT INTO `weather`.`cultivationdata` (`surrogateId`, `sid`, `cropid`, `startTime`, `harvestTime`, `quantity`, `productionCost`, `sellingPrice`, `landSize`) VALUES ('', '20', '1', '2009-9-30', '2009-11-01', '15', '30000', '34500', '14');
+
+
+/*
+SELECT * FROM cultivationdata WHERE  9 <= month(startTime) AND month(startTime) <=10 AND 27 <= date(startTime) AND date(startTIme) <= 11
+*/
+
+SELECT surrogateId FROM cultivationdata WHERE  startTime BETWEEN '2009-9-27' AND '2009-10-11'

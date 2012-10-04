@@ -3,7 +3,7 @@
 class Welcome extends CI_Controller
 {
 
-        function __construct()
+    function __construct()
 	{
 		parent::__construct();
 		$this->init();
@@ -21,16 +21,9 @@ class Welcome extends CI_Controller
 		
                  if( $this->session->userdata('language')=='bangla')
                  {
-                     $this->load->view('eng_segments/normal_head');
-                     $logodata['title']="বাংলাদেশ ক্লাইমেট পোর্টাল ";
-                     $this->load->view('eng_segments/logo',$logodata);
-
-                     $this->load->view('eng_segments/top_navigation',nav_load('bangla','welcome'));
-
-                     $data['welcomeMsg'] = 'Climate Portal For Bangladesh';
-                     $this->load->view('welcome_view',$data);
-                     $this->load->view('eng_segments/footer');
-                 }
+                          $data['welcomeMsg'] = 'Climate Portal For Bangladesh';
+                     $this->load->view('test_view',$data);
+                        }
                  else
                  {
                      $this->load->view('eng_segments/normal_head');
@@ -41,7 +34,7 @@ class Welcome extends CI_Controller
 
 
                      $data['welcomeMsg'] = 'Climate Portal For Bangladesh';
-                     $this->load->view('welcome_view',$data);
+                     $this->load->view('test_view',$data);
                      $this->load->view('eng_segments/footer');
                  }
 
