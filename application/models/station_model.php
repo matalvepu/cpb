@@ -16,6 +16,11 @@ class Station_model  extends CI_Model
                         $this->db->insert('station', $data);
 
     }
+	function  getName($sid)
+	{
+		   $q = $this->db->query("SELECT name FROM station WHERE sid = ?  ",$sid);
+            return $q->row()->name;
+	}
 
     function getSids()
     {
