@@ -49,12 +49,13 @@ INSERT INTO `weather`.`pesticide` (`pestid`, `name`) VALUES (NULL, 'PESTICIDE 1 
 INSERT INTO fertilizer VALUES (NULL,"TSP"),(NULL,"Potash");
 
 INSERT INTO `weather`.`cultivationdata` (`surrogateId`, `sid`, `cropid`, `startTime`, `harvestTime`, `quantity`, `productionCost`, `sellingPrice`, `landSize`) VALUES ('', '20', '1', '2009-10-08', '2009-11-02', '10', '20000', '25000', '10');
-
 INSERT INTO `weather`.`cultivationdata` (`surrogateId`, `sid`, `cropid`, `startTime`, `harvestTime`, `quantity`, `productionCost`, `sellingPrice`, `landSize`) VALUES ('', '20', '1', '2009-9-30', '2009-11-01', '15', '30000', '34500', '14');
-
+INSERT INTO `weather`.`cultivationData` (`surrogateId`, `sid`, `cropid`, `startTime`, `harvestTime`, `quantity`, `productionCost`, `sellingPrice`, `landSize`) VALUES (NULL, '20', '2', '2010-10-02', '2010-11-02', '20', '8000', '10000', '20')
 
 /*
 SELECT * FROM cultivationdata WHERE  9 <= month(startTime) AND month(startTime) <=10 AND 27 <= date(startTime) AND date(startTIme) <= 11
 */
 
-SELECT surrogateId FROM cultivationdata WHERE  startTime BETWEEN '2009-9-27' AND '2009-10-11'
+SELECT surrogateId FROM cultivationdata WHERE  startTime BETWEEN '2009-9-27' AND '2009-10-11' AND sid = 20
+
+SELECT DISTINCT cropid FROM cultivationData WHERE surrogateId IN (1,2) 
