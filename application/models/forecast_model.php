@@ -9,7 +9,16 @@ class Forecast_model  extends CI_Model
                    return $row;
         }
 
-	
+
+        function getForecastOfTomorrow($did)
+        {
+                    $date=date("Y-m-d",time());
+                   $q = "SELECT fdate,rainfall,mintemp,maxtemp FROM forecast WHERE fdate = ? AND did = ?";
+                   $q = $this->db->query($q,array($date,$did));
+                   $row = $q->row();
+                   return $row;
+        }
+
 	function getForecast($did)
         {
                    $q = "SELECT fdate,rainfall,mintemp,maxtemp FROM forecast WHERE fdate = (SELECT max(fdate) FROM forecast where did = ? ) AND did = ?";
