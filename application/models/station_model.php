@@ -20,8 +20,6 @@ class Station_model  extends CI_Model
     
     function insertStation()
     {
-
-
          $data = array(
                'name' =>$this->input->post('station_name') ,
                'latitude' => $this->input->post('latitude'),

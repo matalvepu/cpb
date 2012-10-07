@@ -21,26 +21,24 @@ class Forecast_model  extends CI_Model
 	function insertForecastData()
 	{
 		 $name=$this->input->post('division_name');
-	    $query="SELECT did From division where name=?";
-	    $q=$this->db->query($query,$name);
-		if($q->num_rows()>0)
-		{
-			foreach($q->result() as $row)
-			{
-				
-				$data[]=$row;
-				
-				
-			}
-			
-		 	
-		}
-		$did=$data['0']->did;
-		//echo $sid;
-		//echo $this->input->post('date');
-		$date=substr($this->input->post('date'),6,4)."-".substr($this->input->post('date'),0,2)."-".substr($this->input->post('date'),3,2);
-		//echo $date;
-		
+                 $query="SELECT did From division where name=?";
+                $q=$this->db->query($query,$name);
+                if($q->num_rows()>0)
+                {
+                        foreach($q->result() as $row)
+                        {
+
+                                $data[]=$row;
+
+
+                        }
+                }
+                $did=$data['0']->did;
+                //echo $sid;
+                //echo $this->input->post('date');
+                $date=substr($this->input->post('date'),6,4)."-".substr($this->input->post('date'),0,2)."-".substr($this->input->post('date'),3,2);
+                //echo $date;
+
 		
 		$data = array(
 		       'fdate' =>$date,

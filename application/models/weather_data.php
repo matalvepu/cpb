@@ -15,6 +15,8 @@ class Weather_data extends CI_Model
          return $row;
         
     }
+
+    
 }
 
 ?>
