@@ -2,9 +2,6 @@
 
 class LoadForecastData extends CI_Controller
 {
-
- 
-
 	public function index()
 	{
             $this->load->model('station_model');

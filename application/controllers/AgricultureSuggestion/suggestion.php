@@ -2,24 +2,26 @@
 
 class Suggestion extends CI_Controller
 {
-      var $viewData;
-     function __construct()
-	{
-		parent::__construct();
-		$this->init();
-	}
-        function init()
-	{
-                    if( $this->session->userdata('language') ==FALSE)
-                     $this->session->set_userdata('language', 'bangla');
-	}
+    var $maxTempTolerance;
+    var $minTempTolerance;
+    var $viewData;
+    var $rainfallTolerance ;
+    function __construct()
+    {
 
-        public function post()
-        {
-            
-        }
+        $this->maxTempTolerance = 2;
+        $this->minTempTolerance = 2 ;
+        $this->rainfallTolerance = 50;
+        parent::__construct();
+        $this->init();
+    }
+    function init()
+    {
+        if( $this->session->userdata('language') ==FALSE)
+        $this->session->set_userdata('language', 'bangla');
+    }
 
-        public function index()
+    public function index()
         {
             $this->load->model('station_model');
             $this->viewData['options']=$this->station_model->getSidandName();
@@ -90,17 +92,111 @@ class Suggestion extends CI_Controller
 
         }
 
+ public function getSurrogateIds($years,$syear,$smonth,$sdate,$eyear,$emonth,$edate,$sid)
+ {
+        $this ->load->model('cultivationDataModel');
+        $surrogateIds=NULL;
+        for($i=1;$i<=$years;$i++)
+        {
+
+                //LOADING THE CULTIVATION DATAs WITHIN THAT PERIOD
+                $temp = $this->cultivationDataModel->getSurrogateIds($syear-$i,$smonth,$sdate,$eyear-$i,$emonth,$edate,$sid);
+                if($temp != NULL)
+                {
+                    foreach($temp AS $id)
+                    {
+                        $surrogateIds[]=$id;
+                    }
+                }
+        }
+
+        return $surrogateIds;
+
+ }
+
+ public function filterSurrogateIds($surrogateIds,$sid)
+ {
+     $filtered=NULL;
+     if($surrogateIds!=NULL)
+         foreach($surrogateIds as $surrogateId)
+         {
+                if($this->isCompatible($surrogateId, $sid))
+                         $filtered[]=$surrogateId;
+         }
+     return $filtered;
+ }
+
+ public function isCompatible($surrogateId,$sid)
+ {
+     $this ->load->model('cultivationDataModel');
+     $this ->load->model('weatherDataTemp');
+     $this->load->helper('sid_to_did');
+     $this ->load->model('forecast_model');
+     $this ->load->model('weatherDataRainfall');
+
+     $startDate = $this->cultivationDataModel->getStartTime($surrogateId);
+     $endDate = $this->cultivationDataModel->getHarvestTime($surrogateId);
+     $sid = $this->cultivationDataModel->getSid($surrogateId);
+     $did = sidToDid($sid);
+     
+     // NO data after 2009 , so load from previous data
+     if($endDate>='2010-1-1')
+     {
+         //echo strtotime($startDate );
+          $startDate = date("Y-m-d",strtotime($startDate ) - 3*365*24*3600);
+          $endDate = date("Y-m-d",strtotime($endDate ) - 3*365*24*3600);
+         //echo " YEEEE - $startDate<br/>";
+     }
+
+     /* CALCULATE THE DATE NEEDED FOR FORECAST -> CHANGE YEAR TO 2012*/
+     $forecastStartDate = $this->convertToCurrentYear($startDate);
+     $forecastEndDate  = $this->convertToCurrentYear($endDate);
+
+        
+
+     $avgMax = $this->weatherDataTemp->getAvgMaxTempBetweenDate($sid,$startDate,$endDate);
+     $avgMaxForecast = $this->forecast_model->getAvgMaxTempForecastBetweenDate($did,$forecastStartDate,$forecastEndDate);
+
+     //echo "<br/>$surrogateId  : max temp $avgMax -> $avgMaxForecast";
+     
+     if(abs($avgMax-$avgMaxForecast) > $this->maxTempTolerance)
+             return false;
+     
+     $avgMin = $this->weatherDataTemp->getAvgMinTempBetweenDate($sid,$startDate,$endDate);
+     $avgMinForecast = $this->forecast_model->getAvgMinTempForecastBetweenDate($did,$forecastStartDate,$forecastEndDate);
+
+     if(abs($avgMin-$avgMinForecast) > $this->minTempTolerance)
+             return false;
+
+   
+
+     $rainSum = $this->weatherDataRainfall->getRainfallSumBetweenDate($sid,$startDate,$endDate);
+
+     if($rainSum!=NULL)
+     {
+        $rainForecastSum = $this->forecast_model->getRainfallForecastSumBetweenDate($did,$forecastStartDate,$forecastEndDate);
+        //echo "<br/>$surrogateId ->( $startDate -> $endDate) in $sid max : $rainSum forecast avgMax :$rainForecastSum did :$did";
+
+        if(abs($rainSum-$rainForecastSum) > $this->rainfallTolerance)
+            return false;
+     
+     }
+        
+    //echo "<br/>$surrogateId ->( $startDate -> $endDate) in $sid max : $rainSum forecast avgMax :$rainForecastSum did :$did"; 
+     return true;
+ }
+
+ public function convertToCurrentYear($date)
+ {
+     $time = strtotime($date);
+     $year = date("Y",$time);
+     $diff = date("Y")- $year;
+     return date("Y-m-d",$time+$diff*365*24*3600);
+
+ }
  public function suggest($sid,$landSize)
  {
-      //echo date("Y-m-d");
-
-
-      //Taking Current Date
-      //$currentYear = date("Y");
-      //$currentMonth = date("m");
-      //$currentDate = date("d");
-
-     
+      
       //CALCULATING DATES WITHIN 15 DAYS      
       $syear = intval(date("Y",time()-7*24*3600));
       $smonth = intval(date("m",time()-7*24*3600));
@@ -111,39 +207,28 @@ class Suggestion extends CI_Controller
       $edate = intval(date("d",time()+7*24*3600));
 
       $this ->load->model('cultivationDataModel');
-           $this ->load->model('cropModel');
+      $this ->load->model('cropModel');
 
-           $surrogateIds=NULL;
+
       // WE NEED DATA FOR LAST 3 YEARS
-      for($i=1;$i<=3;$i++)
-      {
-            //LOADING THE CULTIVATION DATAs WITHIN THAT PERIOD
-            $temp = $this->cultivationDataModel->getSurrogateIds($syear-$i,$smonth,$sdate,$eyear-$i,$emonth,$edate,$sid);
-            if($temp != NULL)
-            foreach($temp AS $id)
-            {
-                $surrogateIds[]=$id;
-            }
-      }
+     $surrogateIds=$this->getSurrogateIds(3,$syear,$smonth,$sdate,$eyear,$emonth,$edate,$sid);
 
-     // echo "<br/> Surrogate Keys";
-     // print_r($surrogateIds);
 
       // WE HAVE SURROGATE NEEDED FOR THAT REGION
 
       /*********************************/
       // ELIMINATE SOME IF NEEDED HERE
 
-      // FOR NOW SELECTING EVERY CROP ON THAT TIME SPAN
+
+      $surrogateIds = $this->filterSurrogateIds($surrogateIds,$sid);
+
       /*********************************/
 
-$selectedCrops =NULL;
+       $selectedCrops =NULL;
       // Get which crops are selected
        if($surrogateIds != NULL)
             $selectedCrops = $this->cultivationDataModel->getSelectedCropIds($surrogateIds);
 
-     // echo "<br/> Selected Crops";
-    //  print_r($selectedCrops);
 
        $found=false;
        if($selectedCrops != NULL)

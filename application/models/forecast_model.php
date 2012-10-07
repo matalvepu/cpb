@@ -1,6 +1,45 @@
 <?php
 class Forecast_model  extends CI_Model
 {
+        function getAvgMaxTempForecastBetweenDate($did,$sdate,$edate)
+        {
+                $this->db->select_avg('maxtemp');
+                $this->db->where('did', $did);
+                $this->db->where('fdate >= ', $sdate);
+                $this->db->where('fdate <= ', $edate);
+                $q = $this->db->get('forecast');
+                if($q->result() != NULL)
+                    return $q->row()->maxtemp;
+                else
+                    return NULL;
+        }
+
+        function getAvgMinTempForecastBetweenDate($did,$sdate,$edate)
+        {
+                $this->db->select_avg('mintemp');
+                $this->db->where('did', $did);
+                $this->db->where('fdate >= ', $sdate);
+                $this->db->where('fdate <= ', $edate);
+                $q = $this->db->get('forecast');
+                if($q->result() != NULL)
+                    return $q->row()->mintemp;
+                else
+                    return NULL;
+        }
+
+        function getRainfallForecastSumBetweenDate($did,$sdate,$edate)
+        {
+                $this->db->select_sum('rainfall');
+                $this->db->where('did', $did);
+                $this->db->where('fdate >= ', $sdate);
+                $this->db->where('fdate <= ', $edate);
+                $q = $this->db->get('forecast');
+                if($q->result() != NULL)
+                    return $q->row()->rainfall;
+                else
+                    return NULL;
+        }
+        
     	function getRainfallForecast($did)
         {
                    $q = "SELECT rainfall FROM forecast WHERE fdate = (SELECT max(fdate) FROM forecast where did = ? ) AND did = ?";
