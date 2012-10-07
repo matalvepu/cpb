@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class LoadWeatherData extends CI_Controller
+class LoadForecastData extends CI_Controller
 {
 
  
