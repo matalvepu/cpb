@@ -64,7 +64,7 @@ class Suggestion extends CI_Controller
                      $logodata['title']="বাংলাদেশ ক্লাইমেট পোর্টাল ";
                      $this->load->view('eng_segments/logo',$logodata);
 
-                     $this->load->view('eng_segments/top_navigation',nav_load('bangla','agri_guggest'));
+                     $this->load->view('eng_segments/top_navigation',nav_load('bangla','agri_suggest'));
 
                      $this->load->view('AgricultureSuggestion/suggestionView',  $this->viewData);
 
@@ -83,7 +83,7 @@ class Suggestion extends CI_Controller
                      $logodata['title']='Climate Portal For Bangladesh';
                      $this->load->view('eng_segments/logo',$logodata);
 
-                     $this->load->view('eng_segments/top_navigation',nav_load('english','agri_guggest'));
+                     $this->load->view('eng_segments/top_navigation',nav_load('english','agri_suggest'));
 
                      $this->load->view('AgricultureSuggestion/suggestionView',$this->viewData);
 
