@@ -21,7 +21,36 @@ class Station_model  extends CI_Model
 		   $q = $this->db->query("SELECT name FROM station WHERE sid = ?  ",$sid);
             return $q->row()->name;
 	}
-
+	
+	function  getSid($name)
+	{
+		   $q = $this->db->query("SELECT sid FROM station WHERE name = ?  ",$name);
+		 if($q->num_rows()>0)
+        {
+            foreach($q->result() as $row)
+            {
+                    $data[]=$row->sid;
+            }
+            return $data;
+        }
+        else return;
+           
+	}
+	
+	function getNames()
+	{
+		$query="SELECT name,sid FROM station";
+	   $q=$this->db->query($query);
+        if($q->num_rows()>0)
+        {
+            foreach($q->result() as $row)
+            {
+                    $data[$row->sid]=$row->name;
+            }
+            return $data;
+        }
+        else return;
+	}
     function getSids()
     {
         $query="SELECT sid FROM station";

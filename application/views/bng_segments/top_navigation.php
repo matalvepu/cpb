@@ -6,6 +6,7 @@
         <li <?php  if($current=="welcome") echo "class=\"active\"";?>><a href="<?php echo base_url();?>">হোম</a></li>
         <li <?php  if($current=="forecast") echo "class=\"active\"";?>><a href="<?php echo base_url();?>index.php/forecast">পুর্বাভাস</a></li>
         <li <?php  if($current=="map") echo "class=\"active\"";?>><a href="<?php echo base_url();?>index.php/map">তাপমাত্রা তুলনা </a>
+         <li <?php  if($current=="map১") echo "class=\"active\"";?>><a href="<?php echo base_url();?>index.php/map">অ্যানালাইসিস </a>
           <!--  <ul>
             <li><a href="#">Link 1</a></li>
             <li><a href="#">Link 2</a></li>
