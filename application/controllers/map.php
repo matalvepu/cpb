@@ -46,8 +46,7 @@ class Map extends CI_Controller
       $logodata['title']="বাংলাদেশ ক্লাইমেট পোর্টাল ";
        $this->load->view('eng_segments/logo',$logodata);
 
-                     $this->load->view('eng_segments/top_navigation',nav_load('bangla','welcome'));
-
+    $this->load->view('eng_segments/top_navigation',nav_load('bangla','welcome'));
 
     $this->load->view('showmap',$data);
 	

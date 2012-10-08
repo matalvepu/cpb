@@ -8,6 +8,16 @@ class WeatherDataTemp extends CI_Model
             return $q->row()->a;
         }
 
+<<<<<<< HEAD
+
+ function avgMinTempMonthYear($sid,$month,$year)
+    {
+        $q = $this->db->query("SELECT AVG( mintemp ) AS a FROM weatherdata WHERE sid = ? AND MONTH( wdate ) = ? AND YEAR( wdate      ) = ?",array($sid,$month,$year));
+        return $q->row()->a;
+    }
+
+    
+=======
         function getAvgMaxTempBetweenDate($sid,$sdate,$edate)
         {
             $this->db->select_avg('maxTemp');
@@ -33,4 +43,5 @@ class WeatherDataTemp extends CI_Model
             else
                 return NULL;
         }
+>>>>>>> e16f210b3e41b4f84b6d5216d9d178af697bef16
 }
