@@ -72,7 +72,7 @@ class Suggestion extends CI_Controller
                  }
                  else
                  {
-                                          $this->viewData['quantityText']="সম্ভাব্য পরিমাণ (মণ)";
+                     $this->viewData['quantityText']="সম্ভাব্য পরিমাণ (মণ)";
                      $this->viewData['costText']="সম্ভাব্য খরচ";
                      $this->viewData['sellText']="সম্ভাব্য বিক্রয় মূল্য";
                      $this->viewData['revenueText']="সম্ভাব্য লাভ";
@@ -85,7 +85,7 @@ class Suggestion extends CI_Controller
 
                      $this->load->view('eng_segments/top_navigation',nav_load('english','agri_guggest'));
 
-                     $this->load->view('AgricultureSuggestion/suggestionView',$data);
+                     $this->load->view('AgricultureSuggestion/suggestionView',$this->viewData);
 
                      $this->load->view('eng_segments/footer');
                  }
