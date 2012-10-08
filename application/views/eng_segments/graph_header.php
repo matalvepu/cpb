@@ -13,6 +13,31 @@
 <script type="text/javascript" src="<?php echo base_url();?>/javascript/datepicker/jquery.ui.datepicker.js"></script>
 
 
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable(
+<?php
+echo $array;
+?>);
+
+        var options = {
+          title: '<?php echo $title;?>',
+          vAxis: {
+              title: "<?php echo $yAxistitle;?>"
+              
+            }
+            
+
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
 
 
 <link rel="stylesheet" href="<?php echo base_url();?>css/styles/datepicker/demos.css" type="text/css" />
@@ -24,7 +49,4 @@
 		});
 	});
 	</script>
-    
-    
-    
 </head>

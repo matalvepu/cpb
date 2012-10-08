@@ -93,7 +93,7 @@ class MKTest extends CI_Controller
                 
             }
 			
-	     	print_r($array);
+	     	//print_r($array);
 			
 		
 		  $this->MannKendalTest($array);
@@ -116,7 +116,7 @@ class MKTest extends CI_Controller
                 
             }
 			
-	     	print_r($array);
+	     	//print_r($array);
 		
 		   $this->MannKendalTest($array);
             
