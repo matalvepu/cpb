@@ -8,7 +8,7 @@ class ForecastForAndroid extends CI_Controller {
         
         $row = $this->forecast_model->getForecast(4);
 
-        $tosend['Date']=$row->fdate;
+             $tosend['Date']=$row->fdate;
              $tosend['Rainfall']=$row->rainfall;
              $tosend['Minimimum Temp']=$row->mintemp;
              $tosend['Maximum Temp']=$row->maxtemp;
@@ -35,7 +35,7 @@ class ForecastForAndroid extends CI_Controller {
              $did = $this->getClosestDivisionDid($lat,$long);
              //echo "$lat $long $did";
              
-             $row = $this->forecast_model->getForecast($did);
+             $row = $this->forecast_model->getForecastOfTomorrow($did);
              //$id=$data->{'ID'};
             // if($row == NULL) echo "NULL";
              if($row != NULL)

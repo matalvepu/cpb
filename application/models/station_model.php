@@ -2,11 +2,24 @@
 class Station_model  extends CI_Model
 {
 
+    function getSidandName()
+    {
+        $query="SELECT sid,name FROM station";
+	$q=$this->db->query($query);
+        if($q->num_rows()>0)
+        {
+            foreach($q->result() as $row)
+            {
+                    $data[$row->sid]=$row->name;
+            }
+            //print_r($data);
+            return $data;
+        }
+        else return;
+    }
     
     function insertStation()
     {
-
-
          $data = array(
                'name' =>$this->input->post('station_name') ,
                'latitude' => $this->input->post('latitude'),

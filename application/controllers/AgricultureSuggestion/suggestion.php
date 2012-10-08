@@ -2,19 +2,201 @@
 
 class Suggestion extends CI_Controller
 {
+    var $maxTempTolerance;
+    var $minTempTolerance;
+    var $viewData;
+    var $rainfallTolerance ;
+    function __construct()
+    {
 
- public function index()
+        $this->maxTempTolerance = 2;
+        $this->minTempTolerance = 2 ;
+        $this->rainfallTolerance = 50;
+        parent::__construct();
+        $this->init();
+    }
+    function init()
+    {
+        if( $this->session->userdata('language') ==FALSE)
+        $this->session->set_userdata('language', 'bangla');
+    }
+
+    public function index()
+        {
+            $this->load->model('station_model');
+            $this->viewData['options']=$this->station_model->getSidandName();
+            $this->viewData['title'] = "কৃষি উপদেশ";
+            $this->viewData['main']="";
+            $this->viewData['count']=0;
+            $this->viewData['crop']="";
+            $this->viewData['cost']=NULL;
+            $this->viewData['sell']=NULL;
+            $this->viewData['revenue']=NULL;
+            $this->viewData['quantity']=NULL;
+            $this->viewData['msg']="আপনার জমির পরিমাণ এবং  সবচেয়ে কাছাকাছি এলাকার নাম নির্বাচন করুন । আমাদের সিস্টেম থেকে জেনে নিন আপনার জন্য উপযোগী ফসল কী হবে । আপনি আরও জানতে পারবেন সম্ভাব্য উৎপাদন, খরচ, বিক্রয়মূল্য এবং লাভ।<br/><br/>";
+
+            $this->viewData['dropDownText']="এলাকা";
+            $this->viewData['landSizeText']="আপনার জমির পরিমাণ";
+            $this->viewData['submit']="উপদেশ দেখুন";
+
+            if( $this->input->post('stations') != NULL )
+            {
+                $sid = $this->input->post('stations');
+                $landSize =   $this->input->post('landSize');
+                $this->suggest($sid, $landSize);
+            }
+
+            
+             $this->load->helper('nav_loader');
+
+                
+                if( $this->session->userdata('language')=='bangla')
+                 {
+
+                     $this->viewData['quantityText']="সম্ভাব্য পরিমাণ (মণ)";
+                     $this->viewData['costText']="সম্ভাব্য খরচ";
+                     $this->viewData['sellText']="সম্ভাব্য বিক্রয় মূল্য";
+                     $this->viewData['revenueText']="সম্ভাব্য লাভ";
+                     $this->viewData['maxrevText']="সম্ভাব্য সর্বোচ্চ লাভ";
+
+
+                     $this->load->view('eng_segments/normal_head');
+                     $logodata['title']="বাংলাদেশ ক্লাইমেট পোর্টাল ";
+                     $this->load->view('eng_segments/logo',$logodata);
+
+                     $this->load->view('eng_segments/top_navigation',nav_load('bangla','agri_guggest'));
+
+                     $this->load->view('AgricultureSuggestion/suggestionView',  $this->viewData);
+
+                     $this->load->view('eng_segments/footer');
+                 }
+                 else
+                 {
+                                          $this->viewData['quantityText']="সম্ভাব্য পরিমাণ (মণ)";
+                     $this->viewData['costText']="সম্ভাব্য খরচ";
+                     $this->viewData['sellText']="সম্ভাব্য বিক্রয় মূল্য";
+                     $this->viewData['revenueText']="সম্ভাব্য লাভ";
+                     $this->viewData['maxrevText']="সম্ভাব্য সর্বোচ্চ লাভ";
+
+
+                     $this->load->view('eng_segments/normal_head');
+                     $logodata['title']='Climate Portal For Bangladesh';
+                     $this->load->view('eng_segments/logo',$logodata);
+
+                     $this->load->view('eng_segments/top_navigation',nav_load('english','agri_guggest'));
+
+                     $this->load->view('AgricultureSuggestion/suggestionView',$data);
+
+                     $this->load->view('eng_segments/footer');
+                 }
+
+        }
+
+ public function getSurrogateIds($years,$syear,$smonth,$sdate,$eyear,$emonth,$edate,$sid)
  {
-      //echo date("Y-m-d");
-     $sid = 20;
-     $landSize = 10;
+        $this ->load->model('cultivationDataModel');
+        $surrogateIds=NULL;
+        for($i=1;$i<=$years;$i++)
+        {
 
-      //Taking Current Date
-      //$currentYear = date("Y");
-      //$currentMonth = date("m");
-      //$currentDate = date("d");
+                //LOADING THE CULTIVATION DATAs WITHIN THAT PERIOD
+                $temp = $this->cultivationDataModel->getSurrogateIds($syear-$i,$smonth,$sdate,$eyear-$i,$emonth,$edate,$sid);
+                if($temp != NULL)
+                {
+                    foreach($temp AS $id)
+                    {
+                        $surrogateIds[]=$id;
+                    }
+                }
+        }
 
+        return $surrogateIds;
+
+ }
+
+ public function filterSurrogateIds($surrogateIds,$sid)
+ {
+     $filtered=NULL;
+     if($surrogateIds!=NULL)
+         foreach($surrogateIds as $surrogateId)
+         {
+                if($this->isCompatible($surrogateId, $sid))
+                         $filtered[]=$surrogateId;
+         }
+     return $filtered;
+ }
+
+ public function isCompatible($surrogateId,$sid)
+ {
+     $this ->load->model('cultivationDataModel');
+     $this ->load->model('weatherDataTemp');
+     $this->load->helper('sid_to_did');
+     $this ->load->model('forecast_model');
+     $this ->load->model('weatherDataRainfall');
+
+     $startDate = $this->cultivationDataModel->getStartTime($surrogateId);
+     $endDate = $this->cultivationDataModel->getHarvestTime($surrogateId);
+     $sid = $this->cultivationDataModel->getSid($surrogateId);
+     $did = sidToDid($sid);
      
+     // NO data after 2009 , so load from previous data
+     if($endDate>='2010-1-1')
+     {
+         //echo strtotime($startDate );
+          $startDate = date("Y-m-d",strtotime($startDate ) - 3*365*24*3600);
+          $endDate = date("Y-m-d",strtotime($endDate ) - 3*365*24*3600);
+         //echo " YEEEE - $startDate<br/>";
+     }
+
+     /* CALCULATE THE DATE NEEDED FOR FORECAST -> CHANGE YEAR TO 2012*/
+     $forecastStartDate = $this->convertToCurrentYear($startDate);
+     $forecastEndDate  = $this->convertToCurrentYear($endDate);
+
+        
+
+     $avgMax = $this->weatherDataTemp->getAvgMaxTempBetweenDate($sid,$startDate,$endDate);
+     $avgMaxForecast = $this->forecast_model->getAvgMaxTempForecastBetweenDate($did,$forecastStartDate,$forecastEndDate);
+
+     //echo "<br/>$surrogateId  : max temp $avgMax -> $avgMaxForecast";
+     
+     if(abs($avgMax-$avgMaxForecast) > $this->maxTempTolerance)
+             return false;
+     
+     $avgMin = $this->weatherDataTemp->getAvgMinTempBetweenDate($sid,$startDate,$endDate);
+     $avgMinForecast = $this->forecast_model->getAvgMinTempForecastBetweenDate($did,$forecastStartDate,$forecastEndDate);
+
+     if(abs($avgMin-$avgMinForecast) > $this->minTempTolerance)
+             return false;
+
+   
+
+     $rainSum = $this->weatherDataRainfall->getRainfallSumBetweenDate($sid,$startDate,$endDate);
+
+     if($rainSum!=NULL)
+     {
+        $rainForecastSum = $this->forecast_model->getRainfallForecastSumBetweenDate($did,$forecastStartDate,$forecastEndDate);
+        //echo "<br/>$surrogateId ->( $startDate -> $endDate) in $sid max : $rainSum forecast avgMax :$rainForecastSum did :$did";
+
+        if(abs($rainSum-$rainForecastSum) > $this->rainfallTolerance)
+            return false;
+     
+     }
+        
+    //echo "<br/>$surrogateId ->( $startDate -> $endDate) in $sid max : $rainSum forecast avgMax :$rainForecastSum did :$did"; 
+     return true;
+ }
+
+ public function convertToCurrentYear($date)
+ {
+     $time = strtotime($date);
+     $year = date("Y",$time);
+     $diff = date("Y")- $year;
+     return date("Y-m-d",$time+$diff*365*24*3600);
+
+ }
+ public function suggest($sid,$landSize)
+ {
+      
       //CALCULATING DATES WITHIN 15 DAYS      
       $syear = intval(date("Y",time()-7*24*3600));
       $smonth = intval(date("m",time()-7*24*3600));
@@ -25,40 +207,31 @@ class Suggestion extends CI_Controller
       $edate = intval(date("d",time()+7*24*3600));
 
       $this ->load->model('cultivationDataModel');
+      $this ->load->model('cropModel');
+
 
       // WE NEED DATA FOR LAST 3 YEARS
-      for($i=1;$i<=3;$i++)
-      {
-            //LOADING THE CULTIVATION DATAs WITHIN THAT PERIOD
-            $temp = $this->cultivationDataModel->getSurrogateIds($syear-$i,$smonth,$sdate,$eyear-$i,$emonth,$edate,$sid);
-            if($temp != NULL)
-            foreach($temp AS $id)
-            {
-                $surrogateIds[]=$id;
-            }
-      }
+     $surrogateIds=$this->getSurrogateIds(3,$syear,$smonth,$sdate,$eyear,$emonth,$edate,$sid);
 
-      echo "<br/> Surrogate Keys";
-      print_r($surrogateIds);
 
       // WE HAVE SURROGATE NEEDED FOR THAT REGION
 
       /*********************************/
       // ELIMINATE SOME IF NEEDED HERE
 
-      // FOR NOW SELECTING EVERY CROP ON THAT TIME SPAN
+
+      $surrogateIds = $this->filterSurrogateIds($surrogateIds,$sid);
+
       /*********************************/
 
-
+       $selectedCrops =NULL;
       // Get which crops are selected
-      $selectedCrops = $this->cultivationDataModel->getSelectedCropIds($surrogateIds);
-
-      echo "<br/> Selected Crops";
-      print_r($selectedCrops);
+       if($surrogateIds != NULL)
+            $selectedCrops = $this->cultivationDataModel->getSelectedCropIds($surrogateIds);
 
 
-      
-
+       $found=false;
+       if($selectedCrops != NULL)
       foreach ($selectedCrops AS $cropId)
       {
           $cultivationCostPerUnit = 0;
@@ -66,7 +239,8 @@ class Suggestion extends CI_Controller
           $maxRevenuePerUnit=0;
           $quantityPerUnitArea = 0;
           $count = 0;
-          
+
+          if($surrogateIds != NULL)
           foreach($surrogateIds AS $surrogateId)
           {
 
@@ -121,17 +295,36 @@ class Suggestion extends CI_Controller
               $probableRevenue = $probableQuantity * $revenuePerUnit;
               $maxProbableRevinue = $maxRevenuePerUnit * $probableQuantity;
 
-              echo "<br/>crop : $cropId quantity : $probableQuantity cost : $probableCost ,sell : $probableSellPrice, revenue : $probableRevenue ,max:  $maxProbableRevinue<br/>";
+              if($this->session->userdata('language')=='bangla')
+                     $cropName=$this->cropModel->getBanglaCropName($cropId);
+              else
+                     $cropName=$this->cropModel->getCropName($cropId);
+              
+              $this->viewData['count'] ++;
+              $this->viewData['crop'][]=$cropName;
+              $this->viewData['quantity'][]=$probableQuantity;
+              $this->viewData['cost'][] = $probableCost;
+              $this->viewData['sell'][]=$probableSellPrice;
+              $this->viewData['revenue'][]=$probableRevenue;
+              $this->viewData['maxrev'][]=$maxProbableRevinue;
+              
+              //$this->viewData['main'] .= "<br/>crop : $cropName quantity : $probableQuantity cost : $probableCost ,sell : $probableSellPrice, revenue : $probableRevenue ,max:  $maxProbableRevinue<br/>";
+            $found = TRUE;
           }
           else
           {
-              echo "No suggestion found given Criteria<bd/>";
+
+         //     echo "IN ELSE". $this->viewData['error'];
+              $this->viewData['error']= "দুঃখিত !! আপনার পরিস্তিতির সাথে সামঞ্জস্য পূর্ন কোনো ততথ্য পাওয়া যায় নি<br/>";
           }
           
 
           //echo "<br/>";
       }
+      if($found==false)   $this->viewData['error']= "দুঃখিত !! আপনার পরিস্তিতির সাথে সামঞ্জস্য পূর্ন কোনো তথ্য পাওয়া যায় নি<br/>";
  }
+
+
 }
 ?>
 

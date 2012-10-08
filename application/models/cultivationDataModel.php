@@ -1,6 +1,42 @@
 <?php
 class CultivationDataModel  extends CI_Model
 {
+
+     function getSid($surrogateId)
+    {
+        $this->db->select('sid');
+        $this->db->where('surrogateId', $surrogateId);
+        $q = $this->db->get('cultivationData');
+
+        if($q->result() != NULL)
+            return $q->row()->sid;
+        else
+            return NULL;
+    }
+
+    function getHarvestTime($surrogateId)
+    {
+        $this->db->select('harvestTime');
+        $this->db->where('surrogateId', $surrogateId);
+        $q = $this->db->get('cultivationData');
+
+        if($q->result() != NULL)
+            return $q->row()->harvestTime;
+        else
+            return NULL;
+    }
+
+    function getStartTime($surrogateId)
+    {
+        $this->db->select('startTime');
+        $this->db->where('surrogateId', $surrogateId);
+        $q = $this->db->get('cultivationData');
+
+        if($q->result() != NULL)
+            return $q->row()->startTime;
+        else
+            return NULL;
+    }
     
     function getSurrogateIds($syear,$smonth,$sdate,$eyear,$emonth,$edate,$sid)
     {
@@ -84,7 +120,7 @@ class CultivationDataModel  extends CI_Model
             return NULL;
     }
 
-    
+    // Takes Surrogate IDs in a array , returns corresponding crops (DISTINCT)
     function getSelectedCropIds($surrogateIds)
     {
         
