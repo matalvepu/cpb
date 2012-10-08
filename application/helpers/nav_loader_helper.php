@@ -25,8 +25,7 @@ function nav_load($str,$current)
                      $navdata['analysis']="Analysis";
                      $navdata['agri_suggest']= "Agricultural Suggestion";
                     return $navdata;
-    
-        
+   
     }
                
 }
