@@ -37,8 +37,32 @@ class CultivationDataModel  extends CI_Model
         else
             return NULL;
     }
-    
-    function getSurrogateIds($syear,$smonth,$sdate,$eyear,$emonth,$edate,$sid)
+
+
+    function getSurrogateIdsGivenTimePeriod($syear,$smonth,$sdate,$eyear,$emonth,$edate)
+    {
+        $query="SELECT surrogateId FROM cultivationdata WHERE  startTime BETWEEN '?-?-?' AND '?-?-?'";
+
+        $q=$this->db->query($query,array($syear,$smonth,$sdate,$eyear,$emonth,$edate));
+
+        if($q->num_rows()>0)
+        {
+            foreach($q->result() as $row)
+            {
+                    $data[]=$row->surrogateId;
+             //       print_r($data);
+            }
+            return $data;
+        }
+
+        else {
+           // echo "NULL";
+            return;
+        }
+    }
+
+
+    function getSurrogateIdsOfThisStation($syear,$smonth,$sdate,$eyear,$emonth,$edate,$sid)
     {
         $query="SELECT surrogateId FROM cultivationdata WHERE  startTime BETWEEN '?-?-?' AND '?-?-?' AND sid = ?";
 
