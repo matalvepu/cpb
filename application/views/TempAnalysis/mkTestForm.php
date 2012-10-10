@@ -9,6 +9,15 @@
 
 <?php  
 
+if(!isset($mkparametre))$mkparametre=NULL;
+
+if(!isset($type))$type=NULL;
+
+if(!isset($monthname))$monthname=NULL;
+
+if(!isset($syear))$syear=NULL;
+
+if(!isset($eyear))$eyear=NULL;
 
 
 echo form_open_multipart('Temp/mKTest/getInputFromUser');
@@ -33,8 +42,8 @@ echo form_dropdown('startyear', $options,2, 'style="width: 230px; height: 25px; 
 ?>
 <br/>
 <?php
-echo "Last Year:";
-echo form_dropdown('lastyear', $options,"2009", 'style="width: 230px; height: 25px; background-color:#C0C0C0; font-size: 16px"');
+echo "Last Year:\n";
+echo form_dropdown('lastyear', $options,"1970", 'style="width: 230px; height: 25px; background-color:#C0C0C0; font-size: 16px"');
 ?>
 
 <br/>
@@ -62,7 +71,42 @@ echo form_submit('upload','Find The Trend');
 echo form_close();
 
 ?>
-<br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/>
+<div id="message" style="font-family: sans-serif; font-size:18px; color:#900;">
+<?php 
+	if(isset($mkparametre))
+	{
+		echo "Menn-Kendall Trend Test Result of ".$type." of ".$monthname." on base daily data from ".$syear." to ".$eyear.": \n\n";
+		echo "Menn-Kendall Statistics ,S : ".$mkparametre[0];
+		?>
+        <br/>
+        <?php
+		echo " variance of S, VAR(S) :".$mkparametre[1];
+		?>
+        <br/>
+        <?php
+		echo "Test Statistics ,Z : ".$mkparametre[2]."\n";
+		?>
+        <br/>
+        <?php
+		if($mkparametre[0]>250)
+		{
+			echo "Positive Trend is Dectected on ".$type. " of ".$monthname;
+			
+		}
+		else if($mkparametre[0]<-250)
+		{
+			echo "Negative Trend is Dectected on ".$type. " of ".$monthname;
+			
+		}
+		else
+		 echo "No Trend is Dectected on ".$type. " of ".$monthname;
+		 
+		
+	}
+     ?>
+     
+     </div>
  </div>
 
         <br class="clear" />

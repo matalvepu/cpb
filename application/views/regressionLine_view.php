@@ -5,7 +5,7 @@
       
           <div id="welcome_msg">
 
-      <h2><br/> Change in temp ( °C/decade) </h2>
+      <h2><br/> Regression Analysis </h2>
 
 <?php  
 

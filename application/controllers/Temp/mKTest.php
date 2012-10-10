@@ -54,21 +54,52 @@ class MKTest extends CI_Controller
 			 $sid=$this->input->post('station_name');
 			 $syear=$this->input->post('startyear');
 			 $eyear=$this->input->post('lastyear');
-			 $month=$this->input->post('month');
+			 $month=intval($this->input->post('month'));
 			 $this->load->model('station_model');
 			 $kind=$this->input->post('kind');
 			
-			echo $sid."--".$syear."--".$eyear."--".$month."--".$kind."\n";
+			//echo $sid."--".$syear."--".$eyear."--".$month."--".$kind."\n";
 			 
 			 if(strcmp($kind,"Max Temp")==0)
 			 {
 				 
-				   $this->avgMaxTemp($sid,$month,$syear,$eyear);
+				  $mkparametre=$this->avgMaxTemp($sid,$month,$syear,$eyear);
 				 
 			 }
 			 else 
 			 
-			  $this->avgMinTemp($sid,$month,$syear,$eyear); 
+			  $mkparametre=$this->avgMinTemp($sid,$month,$syear,$eyear); 
+			  
+			  $data['mkparametre']=$mkparametre;
+			  
+			  $this->load->model('station_model');
+			  
+			 
+			 $data['stationName']=$this->station_model->getNames();
+			 for($i=1950;$i<date('Y');$i++)
+			 {
+				 $options[$i]=$i;
+			 }
+			 $data['options']=$options;
+			 
+			
+			$data['type']=$kind;
+			$monthname=$this->getMonthString($month);
+			echo $monthname;
+			$data['monthname']=$monthname;
+			$data['syear']=$syear;
+			$data['eyear']=$eyear;
+			
+			 $this->load->view('eng_segments/normal_head');
+			  $logodata['title']="বাংলাদেশ ক্লাইমেট পোর্টাল ";
+			 $this->load->view('eng_segments/logo',$logodata);
+		
+			  $this->load->view('eng_segments/top_navigation',nav_load('bangla','analysis'));
+		
+			  $this->load->view('TempAnalysis/mkTestForm',$data);
+			
+			   $this->load->view('eng_segments/footer');
+			  
 			
 			
 			
@@ -96,7 +127,8 @@ class MKTest extends CI_Controller
 	     	//print_r($array);
 			
 		
-		  $this->MannKendalTest($array);
+		  $mkparametre=$this->MannKendalTest($array);
+		  return $mkparametre;
             
 	   }
 	   
@@ -118,7 +150,8 @@ class MKTest extends CI_Controller
 			
 	     	//print_r($array);
 		
-		   $this->MannKendalTest($array);
+		  $mkparametre=$this->MannKendalTest($array);
+		  return $mkparametre;
             
 	   }
 	
@@ -221,13 +254,19 @@ class MKTest extends CI_Controller
 			$trend=exp(-($up*$up)/2)/(sqrt(2*3.1416)*sqrt($varS))*100;
 			
 			
+			$mkparametre[]=number_format($S,3);
 			
-			echo "MannKendall".$S;
-			echo "---Var S".$varS;
-			echo "----Z=".$Z;
+			$mkparametre[]=number_format($varS,3);
+			$mkparametre[]=number_format($Z,3);
 			
-			echo "----Trend:".$trend;
+		return $mkparametre;
 			
 		
+	}
+	function getMonthString($n)
+	{
+	  $timestamp = mktime(0, 0, 0, $n, 1, 2005);
+	
+	  return date("F", $timestamp);
 	}
 }
