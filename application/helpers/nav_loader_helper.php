@@ -14,7 +14,6 @@ function nav_load($str,$current)
                      $navdata['temp_comparison']="তাপমাত্রা তুলনা";
                      $navdata['analysis']="তুলনা";
 
-                     $navdata['agri_guggest']= "কৃষি উপদেশ";
                      $navdata['temp_change']= "তাপমাত্রার পরিবর্তন";
 
                      $navdata['analysis']="তুলনা";
@@ -32,7 +31,7 @@ function nav_load($str,$current)
                      $navdata['temp_comparison']="Temperature Comparison";
 
 					 $navdata['analysis']="Analysis";
-                     $navdata['agri_guggest']= "Agricultural Suggestion";
+                     $navdata['agri_suggest']= "Agricultural Suggestion";
 					 $navdata['temp_change']= "Change In Temperature";
 					 $navdata['regression']="Regression Analysis";
 					 $navdata['cluster']="Rainfall Clustering";
