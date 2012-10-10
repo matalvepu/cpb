@@ -8,6 +8,14 @@ class Division_model  extends CI_Model
                    $row = $q->row();
                    return $row;
         }
+
+            function getDidByName($did)
+        {
+                   $q = "SELECT did FROM division WHERE  name = ?";
+                   $q = $this->db->query($q,$did);
+                   $row = $q->row();
+                   return $row->did;
+        }
     function getLatLong($sid)
     {
         $query="SELECT latitude, longitude FROM division WHERE did = ?";
@@ -38,6 +46,20 @@ class Division_model  extends CI_Model
         else return;
     }
 
+    function getDivisionNames()
+    {
+        $query="SELECT name FROM division";
+	$q=$this->db->query($query);
+        if($q->num_rows()>0)
+        {
+            foreach($q->result() as $row)
+            {
+                    $data[]=$row->name;
+            }
+            return $data;
+        }
+        else return;
+    }
    
  function insertDivision()
  {

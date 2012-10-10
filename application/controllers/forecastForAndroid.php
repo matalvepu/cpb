@@ -40,17 +40,17 @@ class ForecastForAndroid extends CI_Controller {
             // if($row == NULL) echo "NULL";
              if($row != NULL)
              {
-                 $tosend['Date']=$row->fdate;
-                 $tosend['Rainfall']=$row->rainfall;
-                 $tosend['Minimimum Temp']=$row->mintemp;
-                 $tosend['Maximum Temp']=$row->maxtemp;
+                 $tosend['date']=$row->fdate;
+                 $tosend['rainfall']=$row->rainfall;
+                 $tosend['mintemp']=$row->mintemp;
+                 $tosend['maxtemp']=$row->maxtemp;
              }
             else
              {
-                 $tosend['Date']=NULL;
-                 $tosend['Rainfall']=NULL;
-                 $tosend['Minimimum Temp']=NULL;
-                 $tosend['Maximum Temp']=NULL;
+                 $tosend['date']=NULL;
+                 $tosend['rainfall']=NULL;
+                 $tosend['mintemp']=NULL;
+                 $tosend['maxtemp']=NULL;
              }
              
              print_r(json_encode($tosend));  
