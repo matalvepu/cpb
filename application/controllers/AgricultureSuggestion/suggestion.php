@@ -6,12 +6,13 @@ class Suggestion extends CI_Controller
     var $minTempTolerance;
     var $viewData;
     var $rainfallTolerance ;
+    var $debug=false;
     function __construct()
     {
 
-        $this->maxTempTolerance = 2;
-        $this->minTempTolerance = 2 ;
-        $this->rainfallTolerance = 50;
+        $this->maxTempTolerance = 3;
+        $this->minTempTolerance = 3 ;
+        $this->rainfallTolerance =  100;
         parent::__construct();
         $this->init();
     }
@@ -22,29 +23,29 @@ class Suggestion extends CI_Controller
     }
 
     public function index()
+    {
+        $this->load->model('station_model');
+        $this->viewData['options']=$this->station_model->getSidandName();
+        $this->viewData['title'] = "কৃষি উপদেশ";
+        $this->viewData['main']="";
+        $this->viewData['count']=0;
+        $this->viewData['crop']="";
+        $this->viewData['cost']=NULL;
+        $this->viewData['sell']=NULL;
+        $this->viewData['revenue']=NULL;
+        $this->viewData['quantity']=NULL;
+        $this->viewData['msg']="আপনার জমির পরিমাণ এবং  সবচেয়ে কাছাকাছি এলাকার নাম নির্বাচন করুন । আমাদের সিস্টেম থেকে জেনে নিন আপনার জন্য উপযোগী ফসল কী হবে । আপনি আরও জানতে পারবেন সম্ভাব্য উৎপাদন, খরচ, বিক্রয়মূল্য এবং লাভ।<br/><br/>";
+
+        $this->viewData['dropDownText']="এলাকা";
+        $this->viewData['landSizeText']="আপনার জমির পরিমাণ";
+        $this->viewData['submit']="উপদেশ দেখুন";
+
+        if( $this->input->post('stations') != NULL )
         {
-            $this->load->model('station_model');
-            $this->viewData['options']=$this->station_model->getSidandName();
-            $this->viewData['title'] = "কৃষি উপদেশ";
-            $this->viewData['main']="";
-            $this->viewData['count']=0;
-            $this->viewData['crop']="";
-            $this->viewData['cost']=NULL;
-            $this->viewData['sell']=NULL;
-            $this->viewData['revenue']=NULL;
-            $this->viewData['quantity']=NULL;
-            $this->viewData['msg']="আপনার জমির পরিমাণ এবং  সবচেয়ে কাছাকাছি এলাকার নাম নির্বাচন করুন । আমাদের সিস্টেম থেকে জেনে নিন আপনার জন্য উপযোগী ফসল কী হবে । আপনি আরও জানতে পারবেন সম্ভাব্য উৎপাদন, খরচ, বিক্রয়মূল্য এবং লাভ।<br/><br/>";
-
-            $this->viewData['dropDownText']="এলাকা";
-            $this->viewData['landSizeText']="আপনার জমির পরিমাণ";
-            $this->viewData['submit']="উপদেশ দেখুন";
-
-            if( $this->input->post('stations') != NULL )
-            {
-                $sid = $this->input->post('stations');
-                $landSize =   $this->input->post('landSize');
-                $this->suggest($sid, $landSize);
-            }
+            $sid = $this->input->post('stations');
+            $landSize =   $this->input->post('landSize');
+            $this->suggest($sid, $landSize);
+        }
 
             
              $this->load->helper('nav_loader');
@@ -96,22 +97,43 @@ class Suggestion extends CI_Controller
  {
         $this ->load->model('cultivationDataModel');
         $surrogateIds=NULL;
+
+        //echo '$years,$syear,$smonth,$sdate,$eyear,$emonth,$edate,$sid'."$years,$syear,$smonth,$sdate,$eyear,$emonth,$edate,$sid<br/>";
         for($i=1;$i<=$years;$i++)
         {
-
                 //LOADING THE CULTIVATION DATAs WITHIN THAT PERIOD
-                $temp = $this->cultivationDataModel->getSurrogateIds($syear-$i,$smonth,$sdate,$eyear-$i,$emonth,$edate,$sid);
+                $temp = $this->cultivationDataModel->getSurrogateIdsGivenTimePeriod($syear-$i,$smonth,$sdate,$eyear-$i,$emonth,$edate);
                 if($temp != NULL)
                 {
                     foreach($temp AS $id)
                     {
-                        $surrogateIds[]=$id;
+                        $thisSid = $this->cultivationDataModel->getSid($id);
+                        if($this->similarSoil($sid, $thisSid))
+                            $surrogateIds[]=$id;
                     }
+
                 }
         }
 
+        if( $this->debug )
+        {
+            echo "<br/>SELECTED AT FIRST : ";
+            print_r($surrogateIds);
+        }
         return $surrogateIds;
 
+ }
+
+ function similarSoil($sid1,$sid2)
+ {
+            //SELECT typeId FROM soilInfo WHERE sid = 1
+            $this->load->model('soilInfo');
+
+            $type1 = $this->soilInfo->getSoilType($sid1);
+            $type2 = $this->soilInfo->getSoilType($sid2);
+
+            //echo "$sid1 Type : $type1 == $sid2 Type : $type2<br/><br/>";
+            return $type1==$type2;
  }
 
  public function filterSurrogateIds($surrogateIds,$sid)
@@ -123,11 +145,19 @@ class Suggestion extends CI_Controller
                 if($this->isCompatible($surrogateId, $sid))
                          $filtered[]=$surrogateId;
          }
-     return $filtered;
+     // print_r($filtered);
+
+         if( $this->debug )
+        {
+            echo "<br/>FILTERED : ";
+            print_r($filtered);
+        }
+         return $filtered;
  }
 
  public function isCompatible($surrogateId,$sid)
  {
+   //  return true;
      $this ->load->model('cultivationDataModel');
      $this ->load->model('weatherDataTemp');
      $this->load->helper('sid_to_did');
@@ -322,6 +352,8 @@ class Suggestion extends CI_Controller
           //echo "<br/>";
       }
       if($found==false)   $this->viewData['error']= "দুঃখিত !! আপনার পরিস্তিতির সাথে সামঞ্জস্য পূর্ন কোনো তথ্য পাওয়া যায় নি<br/>";
+
+    
  }
 
 

@@ -35,6 +35,8 @@ CREATE TABLE cultivationData
     FOREIGN KEY (cropid) REFERENCES crop(cropid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+
+
 ALTER TABLE  cost CHANGE  `banglaName`  `banglaName` VARCHAR( 100 ) CHARACTER SET utf32 COLLATE utf32_unicode_ci NULL DEFAULT NULL
 ALTER TABLE  `pesticide` CHANGE  `name`  `name` VARCHAR( 100 ) CHARACTER SET utf32 COLLATE utf32_unicode_ci NULL DEFAULT NULL
 
@@ -56,6 +58,37 @@ INSERT INTO `weather`.`cultivationdata` (`surrogateId`, `sid`, `cropid`, `startT
 INSERT INTO `weather`.`cultivationData` (`surrogateId`, `sid`, `cropid`, `startTime`, `harvestTime`, `quantity`, `productionCost`, `sellingPrice`, `landSize`) VALUES (NULL, '20', '2', '2010-10-02', '2010-11-02', '20', '8000', '10000', '20')
 UPDATE  `crop` SET  `banglaName` =  'ধাণ' WHERE  `crop`.`cropid` =1 LIMIT 1
 UPDATE  `crop` SET  `banglaName` =  'আলু' WHERE  `crop`.`cropid` =2 LIMIT 1
+
+
+
+CREATE TABLE soilMoisture
+(
+    sid INT,
+    soilMoisture REAL(5,2),
+    FOREIGN KEY(sid) REFERENCES station(sid) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE soilTypes
+(
+    typeId INT PRIMARY KEY auto_increment,
+    type VARCHAR(100)
+);
+
+CREATE TABLE soilInfo
+(
+    sid INT,
+    typeId INT,
+    FOREIGN KEY(sid) REFERENCES station(sid) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY(typeId) REFERENCES soilTypes(typeId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+INSERT INTO soilTypes(type) VALUES ('Clay'),('Silt'),('Sand');
+INSERT INTO soilTypes(type) VALUES ('Stones'),('Chalky Soils');
+
+
+INSERT INTO soilMoisture VALUES(20,);
+
 /*
 SELECT * FROM cultivationdata WHERE  9 <= month(startTime) AND month(startTime) <=10 AND 27 <= date(startTime) AND date(startTIme) <= 11
 */
