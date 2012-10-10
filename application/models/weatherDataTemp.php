@@ -43,7 +43,7 @@ class WeatherDataTemp extends CI_Model
             else
                 return NULL;
         }
-<<<<<<< HEAD
+
 		
    function avgMinTempBetwenYear($sid,$syear,$eyear,$month)
     {
@@ -57,7 +57,5 @@ class WeatherDataTemp extends CI_Model
         return $q->row()->a;
     }
 
-=======
->>>>>>> fe4fd242100849d3b894422ffe2d88fde34e8211
 
 }
