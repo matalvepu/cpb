@@ -20,15 +20,45 @@ class Android extends CI_Controller {
              $sid = $this->getClosestStationSid($lat,$long);
              $row = $this->weather_data->getRecentData($sid);
              //$id=$data->{'ID'};
-             
+
+             $toSend=NULL;
+             $tosend['date']=$row->wdate;
+             $tosend['rainfall']=$row->rainfall;
+             $tosend['mintemp']=$row->mintemp;
+             $tosend['maxtemp']=$row->maxtemp;
+             $tosend['humidity']=$row->humidity;
+
+             echo json_encode($tosend);
+ 
+	}
+        public function checkJSON()
+	{
+
+        //$this->unit_test_getClosestStationSid();
+
+             //$json=$_SERVER['HTTP_JSON'];
+             //$data=json_decode($json);
+
+             $this->load->model('weather_data');
+
+            //wdate,rainfall,mintemp,maxtemp,humidity
+
+             $lat=90;
+             $long = 24;
+
+             $sid = $this->getClosestStationSid($lat,$long);
+             $row = $this->weather_data->getRecentData($sid);
+             //$id=$data->{'ID'};
+
+             $toSend=NULL;
              $tosend['Date']=$row->wdate;
              $tosend['Rainfall']=$row->rainfall;
              $tosend['Minimimum Temp']=$row->mintemp;
              $tosend['Maximum Temp']=$row->maxtemp;
              $tosend['Humidity']=$row->humidity;
 
-             print_r(json_encode($tosend)); 
- 
+             echo json_encode($tosend);
+
 	}
 
         function unit_test_getRainfallForecast()
