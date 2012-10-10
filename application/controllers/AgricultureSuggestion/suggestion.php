@@ -10,9 +10,9 @@ class Suggestion extends CI_Controller
     function __construct()
     {
 
-        $this->maxTempTolerance = 3;
+        $this->maxTempTolerance = 3 ;
         $this->minTempTolerance = 3 ;
-        $this->rainfallTolerance =  100;
+        $this->rainfallTolerance =  100 ;
         parent::__construct();
         $this->init();
     }
@@ -35,7 +35,6 @@ class Suggestion extends CI_Controller
         $this->viewData['revenue']=NULL;
         $this->viewData['quantity']=NULL;
         $this->viewData['msg']="আপনার জমির পরিমাণ এবং  সবচেয়ে কাছাকাছি এলাকার নাম নির্বাচন করুন । আমাদের সিস্টেম থেকে জেনে নিন আপনার জন্য উপযোগী ফসল কী হবে । আপনি আরও জানতে পারবেন সম্ভাব্য উৎপাদন, খরচ, বিক্রয়মূল্য এবং লাভ।<br/><br/>";
-
         $this->viewData['dropDownText']="এলাকা";
         $this->viewData['landSizeText']="আপনার জমির পরিমাণ";
         $this->viewData['submit']="উপদেশ দেখুন";
