@@ -12,6 +12,7 @@
             <li><a href="<?php echo base_url();?>index.php/Temp/mKTest">Mann Kendall</a></li>
             <li><a href="<?php echo base_url();?>index.php/Temp/changeInDecade"><?=$temp_change?></a></li>
             <li><a href="<?php echo base_url();?>index.php/regressionLine"><?=$regression?></a></li>
+            <li><a href="<?php echo base_url();?>index.php/rainfallAnalysis/cluster"><?=$cluster?></a></li>
            </ul>
           <!--  <ul>
             <li><a href="#">Link 1</a></li>

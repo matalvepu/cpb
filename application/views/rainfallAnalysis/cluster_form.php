@@ -5,7 +5,7 @@
       
           <div id="welcome_msg">
 
-      <h2><br/> Change in temp ( °C/decade) </h2>
+      <h2><br/> Clustering on  Monthly Rainfall Data  </h2>
 
 <?php  
 
@@ -84,17 +84,12 @@ echo form_close();
  <br/><br/><br/>
 <div id="message" style="font-family: sans-serif; font-size:18px; color:#900;">
 <?php 
-	/*if($equation!=NULL | $equation != ""  )
-	{
-      echo $equation;
-      echo $coefficient;
-	}
 	
 	if($noData!=NULL | $noData!="" )
 	  echo $noData;
 	  
 	 if($invalidDate!=NULL | $invalidDate!="")
-	 echo $invalidDate;*/
+	 echo $invalidDate;
      ?>
      
      </div>

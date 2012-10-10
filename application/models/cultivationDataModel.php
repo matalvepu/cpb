@@ -1,6 +1,23 @@
 <?php
 class CultivationDataModel  extends CI_Model
 {
+	
+	function insertCultivationData($cultivationdata)
+	{
+		
+		
+	    
+		//echo $sid;
+		//echo $this->input->post('date');
+		
+		//echo $date;
+		
+		
+		
+			$this->db->insert('cultivationdata', $cultivationdata); 
+		
+		
+	}
 
      function getSid($surrogateId)
     {

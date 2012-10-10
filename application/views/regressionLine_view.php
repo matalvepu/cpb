@@ -68,7 +68,7 @@ echo form_dropdown('startyear', $year,2, 'style="width: 230px; height: 25px; bac
 ?>
 <br/>
 <?php
-echo "Last Year:";
+echo "Last Year:\n";
 echo form_dropdown('lastyear', $year,"1960", 'style="width: 230px; height: 25px; background-color:#C0C0C0; font-size: 16px"');
 
 
@@ -87,7 +87,10 @@ echo form_dropdown('startday', $day,1, 'style="width: 230px; height: 25px; backg
 
 <br/>
 <?php
-echo "Last Day:\n";
+echo "Last Day: \n";
+?>
+<br/>
+<?php
 echo form_dropdown('lastday', $day,31, 'style="width: 230px; height: 25px; background-color:#C0C0C0; font-size: 16px"');
 
 

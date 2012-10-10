@@ -1,5 +1,6 @@
 <div class="wrapper col6">
   <div id="footer">
+   <div id="welcome_msg">
       <?php   echo validation_errors();?>
           <div id="login">
 
@@ -25,6 +26,7 @@
     </div>
 
         <br class="clear" />
+        </div>
 
   </div>
 </div>

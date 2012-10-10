@@ -95,8 +95,10 @@ class RegressionLine extends CI_Controller
 				$originalEday=cal_days_in_month(CAL_GREGORIAN, $month  , $syear);
 				else 
 				 $originalEday=$eday;
+				 
+				 $monthname=$this->getMonthString($month);
 				
-				 $title = "Avg Min and Max temp on day $sday to $originalEday in month $month from $syear to $eyear in $stationName station";
+				 $title = "Avg Min and Max temp on day $sday to $originalEday in month $monthname  from $syear to $eyear in $stationName station";
 				 
 				  
 				 if(!strcmp($type,"temp"))
@@ -395,7 +397,12 @@ class RegressionLine extends CI_Controller
 		
 	}
 	
+	function getMonthString($n)
+	{
+	  $timestamp = mktime(0, 0, 0, $n, 1, 2005);
 	
+	  return date("F", $timestamp);
+	}
       
 }
 

@@ -4,6 +4,7 @@
     <div id="topnav">
       <ul>
         <li <?php  if($current=="welcome") echo "class=\"active\"";?>><a href="<?php echo base_url()."index.php/adminArea/adminPanel";?>">Home</a></li>
+        
                 
                 
        <!-- <li <?php  if($current=="forecast") echo "class=\"active\"";?>><a href="<?php echo base_url();?>index.php/forecast"><?=$forecast?></a></li>
@@ -52,6 +53,17 @@
    <li> <a href="<?php echo base_url()."index.php/adminArea/showForecast";?>">Show Forecast Data</a></li>
             </ul>
         </li>
+        
+        <li><a href="">Cultivation Data</a>
+          <ul>
+   <li> <a href="<?php echo base_url()."index.php/adminArea/cropinformation";?>" >Add Data</a></li>
+  <li> <a href="<?php echo base_url()."index.php/adminArea/cropinformation";?>">Delete Data</a></li>
+   <li> <a href="<?php echo base_url()."index.php/adminArea/cropinformation";?>">Update Data</a></li>
+   <li> <a href="<?php echo base_url()."index.php/adminArea/cropinformation";?>">Show Data</a></li>
+          
+          </ul>
+        </li>
+        
         <li class="last"><a href="<?php echo base_url()."index.php/adminArea/welcome/logout";?>">Log Out</a></li>
         <!--
         <li class="last"><a href="#">A Long Link Text</a></li>
