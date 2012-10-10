@@ -39,6 +39,19 @@ class WeatherDataTemp extends CI_Model
             else
                 return NULL;
         }
+		
+		
+		 function avgMinTempBetweenTwoDate($sid,$syear,$smonth,$sdate,$eyear,$emonth,$edate)
+    {
+        $q = $this->db->query("SELECT AVG(mintemp) AS a FROM weatherdata WHERE sid = ? AND wdate >=  '?-?-?' AND wdate <=      '?-?-?'",array($sid,$syear,$smonth,$sdate,$eyear,$emonth,$edate));
+        return $q->row()->a;
+    }
+
+    function avgMaxTempBetweenTwoDate($sid,$syear,$smonth,$sdate,$eyear,$emonth,$edate)
+    {
+         $q = $this->db->query("SELECT AVG(maxtemp) AS a FROM weatherdata WHERE sid = ? AND wdate >=  '?-?-?' AND wdate <=  '?-?-?'",array($sid,$syear,$smonth,$sdate,$eyear,$emonth,$edate));
+        return $q->row()->a;
+    }
 
    function avgMinTempBetwenYear($sid,$syear,$eyear,$month)
     {

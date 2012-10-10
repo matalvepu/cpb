@@ -31,7 +31,7 @@ class ChangeInDecade extends CI_Controller
 		   
         }
 		
-		function showMapChangingInDecade()
+		function showGraph()
 		{
 		  	 $sid=$this->input->post('station_name');
 			 $syear=$this->input->post('startyear');
@@ -72,7 +72,34 @@ class ChangeInDecade extends CI_Controller
             $data['title'] = "Change in temp ( °C/decade) in $stationName";
             $data['yAxistitle'] = " °C/decade";
 			
+			
+			 for($i=1950;$i<date('Y');$i++)
+			 {
+				 $options[$i]=$i;
+			 }
+			 $data['options']=$options;
+			 
+			 $this->load->model('station_model');
+			 
+			 $data['stationName']=$this->station_model->getNames();
+			 
+			
+			
+			
 			 $this->load->view('eng_segments/graph_header',$data);
+			  $logodata['title']="বাংলাদেশ ক্লাইমেট পোর্টাল ";
+			 $this->load->view('eng_segments/logo',$logodata);
+		
+			  $this->load->view('eng_segments/top_navigation',nav_load('bangla','analysis'));
+		
+			  $this->load->view('TempAnalysis/changeInDecadeForm',$data);
+			
+			   $this->load->view('eng_segments/footer');
+			
+			
+			
+			
+			/* $this->load->view('eng_segments/graph_header',$data);
 			  $logodata['title']="বাংলাদেশ ক্লাইমেট পোর্টাল ";
 			 $this->load->view('eng_segments/logo',$logodata);
 		
@@ -80,7 +107,7 @@ class ChangeInDecade extends CI_Controller
 		
 			  $this->load->view('TempAnalysis/lineDefault',$data);
 			
-			  $this->load->view('eng_segments/footer');
+			  $this->load->view('eng_segments/footer');*/
 			          
           
 

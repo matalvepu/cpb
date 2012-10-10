@@ -10,6 +10,8 @@
          <li <?php  if($current=="analysis") echo "class=\"active\"";?>><a href="<?php echo base_url();?>/index.php/Temp/mKTest"><?php echo $analysis;?></a>
            <ul>
             <li><a href="<?php echo base_url();?>index.php/Temp/mKTest">Mann Kendall</a></li>
+            <li><a href="<?php echo base_url();?>index.php/Temp/changeInDecade"><?=$temp_change?></a></li>
+            <li><a href="<?php echo base_url();?>index.php/regressionLine"><?=$regression?></a></li>
            </ul>
           <!--  <ul>
             <li><a href="#">Link 1</a></li>

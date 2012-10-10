@@ -19,6 +19,7 @@ function nav_load($str,$current)
 
                      $navdata['analysis']="তুলনা";
                      $navdata['agri_suggest']= "কৃষি উপদেশ";
+					 $navdata['regression']="রিগ্রেসন এনালাইসিস";
 
                      return $navdata;
     }
@@ -32,6 +33,7 @@ function nav_load($str,$current)
 					 $navdata['analysis']="Analysis";
                      $navdata['agri_guggest']= "Agricultural Suggestion";
 					 $navdata['temp_change']= "Change In Temperature";
+					 $navdata['regression']="Regression Analysis";
 
 
                      return $navdata;

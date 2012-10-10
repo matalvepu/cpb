@@ -14,4 +14,17 @@ class WeatherDataRainfall extends CI_Model
             else
                 return NULL;
         }
+		
+   function avgRainfallBetweenTwoDate($sid,$syear,$smonth,$sdate,$eyear,$emonth,$edate)
+    {
+         $q = $this->db->query("SELECT AVG(rainfall) AS a FROM weatherdata WHERE sid = ? AND wdate >=  '?-?-?' AND wdate <=  '?-?-?'",array($sid,$syear,$smonth,$sdate,$eyear,$emonth,$edate));
+        return $q->row()->a;
+    }
+	
+	 function totalRainfallBetweenTwoDate($sid,$syear,$smonth,$sdate,$eyear,$emonth,$edate)
+    {
+         $q = $this->db->query("SELECT SUM(rainfall) AS a FROM weatherdata WHERE sid = ? AND wdate >=  '?-?-?' AND wdate <=  '?-?-?'",array($sid,$syear,$smonth,$sdate,$eyear,$emonth,$edate));
+        return $q->row()->a;
+    }
+		
 }
