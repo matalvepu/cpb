@@ -10,9 +10,9 @@ class Suggestion extends CI_Controller
     function __construct()
     {
 
-        $this->maxTempTolerance = 3 ;
-        $this->minTempTolerance = 3 ;
-        $this->rainfallTolerance =  100 ;
+        $this->maxTempTolerance = 10 ;
+        $this->minTempTolerance = 10 ;
+        $this->rainfallTolerance =  1000 ;
         parent::__construct();
         $this->init();
     }
@@ -34,7 +34,7 @@ class Suggestion extends CI_Controller
         $this->viewData['sell']=NULL;
         $this->viewData['revenue']=NULL;
         $this->viewData['quantity']=NULL;
-        $this->viewData['msg']="আপনার জমির পরিমাণ এবং  সবচেয়ে কাছাকাছি এলাকার নাম নির্বাচন করুন । আমাদের সিস্টেম থেকে জেনে নিন আপনার জন্য উপযোগী ফসল কী হবে । আপনি আরও জানতে পারবেন সম্ভাব্য উৎপাদন, খরচ, বিক্রয়মূল্য এবং লাভ।<br/><br/>";
+        $this->viewData['msg']="আপনার জমির পরিমাণ এবং  সবচেয়ে কাছাকাছি এলাকার নাম নির্বাচন করুন । আমাদের সিস্টেম থেকে জেনে নিন আপনার জন্য উপযোগী ফসল কী হবে । আপনি আরও জানতে পারবেন সম্ভাব্য উৎপাদন, খরচ, বিক্রয়মূল্য এবং লাভ।<br/><br/>";
         $this->viewData['dropDownText']="এলাকা";
         $this->viewData['landSizeText']="আপনার জমির পরিমাণ";
         $this->viewData['submit']="উপদেশ দেখুন";
@@ -55,7 +55,7 @@ class Suggestion extends CI_Controller
 
                      $this->viewData['quantityText']="সম্ভাব্য পরিমাণ (মণ)";
                      $this->viewData['costText']="সম্ভাব্য খরচ";
-                     $this->viewData['sellText']="সম্ভাব্য বিক্রয় মূল্য";
+                     $this->viewData['sellText']="সম্ভাব্য বিক্রয় মূল্য";
                      $this->viewData['revenueText']="সম্ভাব্য লাভ";
                      $this->viewData['maxrevText']="সম্ভাব্য সর্বোচ্চ লাভ";
 
@@ -74,7 +74,7 @@ class Suggestion extends CI_Controller
                  {
                      $this->viewData['quantityText']="সম্ভাব্য পরিমাণ (মণ)";
                      $this->viewData['costText']="সম্ভাব্য খরচ";
-                     $this->viewData['sellText']="সম্ভাব্য বিক্রয় মূল্য";
+                     $this->viewData['sellText']="সম্ভাব্য বিক্রয় মূল্য";
                      $this->viewData['revenueText']="সম্ভাব্য লাভ";
                      $this->viewData['maxrevText']="সম্ভাব্য সর্বোচ্চ লাভ";
 
@@ -227,13 +227,13 @@ class Suggestion extends CI_Controller
  {
       
       //CALCULATING DATES WITHIN 15 DAYS      
-      $syear = intval(date("Y",time()-7*24*3600));
-      $smonth = intval(date("m",time()-7*24*3600));
-      $sdate = intval(date("d",time()-7*24*3600));
+      $syear = intval(date("Y",time()-15*24*3600));
+      $smonth = intval(date("m",time()-15*24*3600));
+      $sdate = intval(date("d",time()-15*24*3600));
 
-      $eyear = intval(date("Y",time()+7*24*3600));
-      $emonth = intval(date("m",time()+7*24*3600));
-      $edate = intval(date("d",time()+7*24*3600));
+      $eyear = intval(date("Y",time()+15*24*3600));
+      $emonth = intval(date("m",time()+15*24*3600));
+      $edate = intval(date("d",time()+15*24*3600));
 
       $this ->load->model('cultivationDataModel');
       $this ->load->model('cropModel');
@@ -344,13 +344,13 @@ class Suggestion extends CI_Controller
           {
 
          //     echo "IN ELSE". $this->viewData['error'];
-              $this->viewData['error']= "দুঃখিত !! আপনার পরিস্তিতির সাথে সামঞ্জস্য পূর্ন কোনো ততথ্য পাওয়া যায় নি<br/>";
+              $this->viewData['error']= "দুঃখিত !! আপনার পরিস্তিতির সাথে সামঞ্জস্য পূর্ন কোনো ততথ্য পাওয়া যায় নি<br/>";
           }
           
 
           //echo "<br/>";
       }
-      if($found==false)   $this->viewData['error']= "দুঃখিত !! আপনার পরিস্তিতির সাথে সামঞ্জস্য পূর্ন কোনো তথ্য পাওয়া যায় নি<br/>";
+      if($found==false)   $this->viewData['error']= "দুঃখিত !! আপনার পরিস্তিতির সাথে সামঞ্জস্য পূর্ন কোনো তথ্য পাওয়া যায় নি<br/>";
 
     
  }
