@@ -2646,6 +2646,32 @@ new google.maps.LatLng(24.18295744507234, 88.73794555664062)
       <button type="button" onclick="Mymensingh()">Mymensingh</button>
     
     <button type="button" onclick="Undo()">Undo</button>-->
+<div class="wrapper col6">
+  <div id="footer">
+      <?php   echo validation_errors();?>
+
+          <div id="welcome_msg">
+
+
+      <h2><br/><?php ""?></h2>
+
+      
+<div id="message" style="font-family: sans-serif; font-size:18px; color:#900;">
+        <h2>বৃষ্টিপাত পূর্বাভাস </h2>
+    </div>
+      
+
+
+
+ </div>
+
+        <br class="clear" />
+
+  </div>
+</div>
+
+
+    
     <div id="map_canvas" style="width:100%; height:100%"></div>
     
     

@@ -27,7 +27,8 @@ class Welcome extends CI_Controller
 
                      $this->load->view('eng_segments/top_navigation',nav_load('bangla','welcome'));
 
-                     $data['welcomeMsg'] = 'Climate Portal For Bangladesh';
+                     $data['welcomeMsg'] = 'বাংলাদেশ ক্লাইমেট পোর্টাল';
+                     $data['lan'] = "bn";
                      $this->load->view('welcome_view',$data);
                      $this->load->view('eng_segments/footer');
                  }
@@ -39,7 +40,7 @@ class Welcome extends CI_Controller
 
                      $this->load->view('eng_segments/top_navigation',nav_load('english','welcome'));
 
-
+                     $data['lan'] = "en";
                      $data['welcomeMsg'] = 'Climate Portal For Bangladesh';
                      $this->load->view('welcome_view',$data);
                      $this->load->view('eng_segments/footer');
