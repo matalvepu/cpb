@@ -15,13 +15,13 @@
        {
            ?>
 
-          আসদাসদ
+          বাংলাদেশ ক্লাইমেট পোর্টালে আপনাকে স্বাগতম
           <?php
        }
        else
        {
         ?>
-          asdsad
+          Welcome to Climate Portal for Bangladesh
           <?php
        }
        ?>

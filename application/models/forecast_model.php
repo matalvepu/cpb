@@ -42,9 +42,11 @@ class Forecast_model  extends CI_Model
         
     	function getRainfallForecast($did)
         {
-                   $q = "SELECT rainfall FROM forecast WHERE fdate = (SELECT max(fdate) FROM forecast where did = ? ) AND did = ?";
-                   $q = $this->db->query($q,array($did,$did));
+                    $date = date("Y-m-d");
+                   $q = "SELECT rainfall FROM forecast WHERE fdate = ? AND did = ?";
+                   $q = $this->db->query($q,array($date,$did));
                    $row = $q->row();
+                   echo "$row->rainfall";
                    return $row;
         }
 
