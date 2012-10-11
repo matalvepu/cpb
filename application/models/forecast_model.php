@@ -46,8 +46,9 @@ class Forecast_model  extends CI_Model
                    $q = "SELECT rainfall FROM forecast WHERE fdate = ? AND did = ?";
                    $q = $this->db->query($q,array($date,$did));
                    $row = $q->row();
-                  
-                   return $row;
+                  if($row==NULL)
+				    return 33;
+                   return $row->rainfall;
         }
 
         function getRainfallForecastOfDate($did,$date)

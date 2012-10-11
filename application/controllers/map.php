@@ -13,8 +13,8 @@ class Map extends CI_Controller
      foreach($dida as $did)
      {
         
-         $row= $this->forecast_model->getRainfallForecast($did);
-         $rainfall=$row->rainfall;
+         $rainfall= $this->forecast_model->getRainfallForecast($did);
+        
          
          
        

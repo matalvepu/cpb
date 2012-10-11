@@ -9,6 +9,8 @@ class WeatherDataTemp extends CI_Model
 			
 			
 			
+			
+			
         }
 
         function avgMinTempMonthYear($sid,$month,$year)
