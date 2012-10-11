@@ -85,7 +85,7 @@ class MKTest extends CI_Controller
 			
 			$data['type']=$kind;
 			$monthname=$this->getMonthString($month);
-			echo $monthname;
+			//echo $monthname;
 			$data['monthname']=$monthname;
 			$data['syear']=$syear;
 			$data['eyear']=$eyear;
