@@ -5,11 +5,11 @@
       <ul>
         <li <?php  if($current=="welcome") echo "class=\"active\"";?>><a href="<?php echo base_url();?>"><?=$home?></a></li>
         <li <?php  if($current=="forecast") echo "class=\"active\"";?>><a href="<?php echo base_url();?>index.php/map"><?=$forecast?></a></li>
-        <li <?php  if($current=="map") echo "class=\"active\"";?>><a href="<?php echo base_url();?>index.php/map"><?=$temp_comparison?></a>
+        
             <li <?php  if($current=="agri_suggest") echo "class=\"active\"";?>><a href="<?php echo base_url();?>index.php/AgricultureSuggestion/suggestion"><?=$agri_suggest?></a>
          <li <?php  if($current=="analysis") echo "class=\"active\"";?>><a href="<?php echo base_url();?>/index.php/Temp/mKTest"><?php echo $analysis;?></a>
            <ul>
-            <li><a href="<?php echo base_url();?>index.php/Temp/mKTest">Mann Kendall</a></li>
+            <li><a href="<?php echo base_url();?>index.php/Temp/mKTest"><?=$mk?></a></li>
             <li><a href="<?php echo base_url();?>index.php/Temp/changeInDecade"><?=$temp_change?></a></li>
             <li><a href="<?php echo base_url();?>index.php/regressionLine"><?=$regression?></a></li>
             <li><a href="<?php echo base_url();?>index.php/rainfallAnalysis/cluster"><?=$cluster?></a></li>

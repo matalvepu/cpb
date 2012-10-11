@@ -53,7 +53,7 @@ function initialize() {
   poly = new google.maps.Polyline(polyOptions);
   poly.setMap(map);
   //google.maps.event.addListener(map, 'click', addLatLng);
-  var cchittagong="<?php echo $color[0]?>",cdhaka="<?php echo $color[1]?>",csylhet="<?php echo $color[2]?>",cbarishal="<?php echo $color[3]?>",crajshahi="<?php echo $color[4]?>",crangpur="<?php echo $color[5]?>",ckhulna="<?php echo $color[6]?>";
+  var cchittagong="<?php echo $color[1]?>",cdhaka="<?php echo $color[2]?>",csylhet="<?php echo $color[5]?>",cbarishal="<?php echo $color[6]?>",crajshahi="<?php echo $color[7]?>",crangpur="<?php echo $color[8]?>",ckhulna="<?php echo $color[9]?>";
   Rajshahi(crajshahi);
   Rangpur(crangpur);
  Dhakawhole(cdhaka);
