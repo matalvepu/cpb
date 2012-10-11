@@ -9,7 +9,23 @@
 
       <h2><br/><?php echo $welcomeMsg;?></h2>
       
-      
+      <p>
+       <?php
+       if($lan=="bn")
+       {
+           ?>
+
+          আসদাসদ
+          <?php
+       }
+       else
+       {
+        ?>
+          asdsad
+          <?php
+       }
+       ?>
+      </p>
 
 
 
